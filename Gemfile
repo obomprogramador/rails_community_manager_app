@@ -33,7 +33,7 @@ group :development, :test do
   gem "debug", platforms: [:mri]
 
   # RSpec
-  gem "rspec-rails", "~> 7.0"
+  gem "rspec-rails", "~> 8.0"
 
   gem 'pry'
   gem 'pry-rails'
