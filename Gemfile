@@ -9,7 +9,7 @@ gem "rails", "~> 7.2.0"
 gem "pg", "~> 1.5"
 
 # Server
-gem "puma", "~> 6.4"
+gem "puma", "~> 8.0"
 
 # Hotwire
 gem "importmap-rails"
