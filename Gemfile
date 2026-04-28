@@ -27,12 +27,17 @@ gem "bootsnap", require: false
 
 gem "simplecov", require: false
 gem 'sprockets-rails'
+gem 'globalid', '>= 1.2.1'
 
 group :development, :test do
   gem "debug", platforms: [:mri]
 
   # RSpec
-  gem "rspec-rails", "~> 6.0"
+  gem "rspec-rails", "~> 7.0"
+
+  gem 'pry'
+  gem 'pry-rails'
+  gem 'pry-byebug'
 end
 
 group :development do

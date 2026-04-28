@@ -2,6 +2,12 @@ require_relative "boot"
 
 require "rails/all"
 
+# Workaround para o bug do CGI no Ruby 3.2+ / Rails 7.2
+require 'cgi'
+unless CGI.class_variable_defined?(:@@accept_charset)
+  CGI.class_variable_set(:@@accept_charset, 'UTF-8')
+end
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -23,5 +29,9 @@ module SocialMedia001
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+    
+    # config.autoload_paths += %W(#{config.root}/app/lib)
+    config.eager_load_paths << Rails.root.join('lib')
+    config.autoload_paths << Rails.root.join('lib')
   end
 end

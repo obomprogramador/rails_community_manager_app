@@ -10,8 +10,67 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 0) do
+ActiveRecord::Schema[7.2].define(version: 2026_04_28_184639) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "communities", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_communities_on_name", unique: true
+  end
+
+  create_table "community_members", force: :cascade do |t|
+    t.bigint "community_id", null: false
+    t.bigint "user_id", null: false
+    t.string "role", default: "member", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id", "user_id"], name: "index_community_members_on_community_id_and_user_id", unique: true
+    t.index ["community_id"], name: "index_community_members_on_community_id"
+    t.index ["user_id"], name: "index_community_members_on_user_id"
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "community_id", null: false
+    t.bigint "parent_message_id"
+    t.text "content", null: false
+    t.string "user_ip", null: false
+    t.float "ai_sentiment_score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["community_id"], name: "index_messages_on_community_id"
+    t.index ["parent_message_id"], name: "index_messages_on_parent_message_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
+  create_table "reactions", force: :cascade do |t|
+    t.bigint "message_id", null: false
+    t.bigint "user_id", null: false
+    t.string "reaction_type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id", "user_id", "reaction_type"], name: "index_reactions_on_message_id_and_user_id_and_reaction_type", unique: true
+    t.index ["message_id"], name: "index_reactions_on_message_id"
+    t.index ["user_id"], name: "index_reactions_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "username", null: false
+    t.boolean "active", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["username"], name: "index_users_on_username", unique: true
+  end
+
+  add_foreign_key "community_members", "communities"
+  add_foreign_key "community_members", "users"
+  add_foreign_key "messages", "communities"
+  add_foreign_key "messages", "messages", column: "parent_message_id"
+  add_foreign_key "messages", "users"
+  add_foreign_key "reactions", "messages"
+  add_foreign_key "reactions", "users"
 end

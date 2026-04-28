@@ -11,4 +11,16 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  
+  resources :users, only: [:create, :destroy] do
+    # Rota customizada para authenticate (GET ou POST)
+    post :authenticate, on: :collection
+  end
+
+  resources :communities, only: [:index, :create, :update] do
+    collection do
+      get :search
+    end
+  end
+
 end
