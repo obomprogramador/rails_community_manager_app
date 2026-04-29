@@ -21,6 +21,14 @@ Rails.application.routes.draw do
     collection do
       get :search
     end
+
+    resources :community_members, only: [:index, :create, :destroy] do
+      member do
+        patch :promote
+        patch :demote
+        patch :ban
+      end
+    end
   end
 
 end

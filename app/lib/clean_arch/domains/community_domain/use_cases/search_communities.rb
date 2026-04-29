@@ -10,7 +10,7 @@ module CleanArch
           def call(input_dto)
             results = @community_repository.search(input_dto.query)
 
-            raise CleanArch::DomainError, "Nenhuma comunidade encontrada" if results.empty?
+            raise CleanArch::Domains::DomainError, "Nenhuma comunidade encontrada" if results.empty?
 
             results.map { |entity| Dtos::CommunityOutputDto.new(entity) }
           end

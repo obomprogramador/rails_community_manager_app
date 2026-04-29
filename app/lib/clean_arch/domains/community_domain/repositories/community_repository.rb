@@ -23,12 +23,12 @@ module CleanArch
             record = Community.create!(name: name, description: description)
             to_entity(record)
           rescue ActiveRecord::RecordInvalid => e
-            raise CleanArch::DomainError, "Erro ao criar comunidade: #{e.message}"
+            raise CleanArch::Domains::DomainError, "Erro ao criar comunidade: #{e.message}"
           end
 
           def save(community_entity)
             record = Community.find_by(id: community_entity.id)
-            raise CleanArch::DomainError, "Comunidade não encontrada" if record.nil?
+            raise CleanArch::Domains::DomainError, "Comunidade não encontrada" if record.nil?
 
             record.update!(
               name:        community_entity.name,
@@ -36,7 +36,7 @@ module CleanArch
             )
             to_entity(record)
           rescue ActiveRecord::RecordInvalid => e
-            raise CleanArch::DomainError, "Erro ao salvar comunidade: #{e.message}"
+            raise CleanArch::Domains::DomainError, "Erro ao salvar comunidade: #{e.message}"
           end
 
           def all

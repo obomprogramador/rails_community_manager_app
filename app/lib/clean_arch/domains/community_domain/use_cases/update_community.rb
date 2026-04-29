@@ -10,10 +10,10 @@ module CleanArch
           def call(input_dto)
             community_entity = @community_repository.find(input_dto.id)
 
-            raise CleanArch::DomainError, "Comunidade não encontrada" if community_entity.nil?
+            raise CleanArch::Domains::DomainError, "Comunidade não encontrada" if community_entity.nil?
 
             if input_dto.name.present?
-              raise CleanArch::DomainError, "Nome já está em uso" if @community_repository.exists_by_name?(input_dto.name)
+              raise CleanArch::Domains::DomainError, "Nome já está em uso" if @community_repository.exists_by_name?(input_dto.name)
             end
 
             community_entity.update_info(

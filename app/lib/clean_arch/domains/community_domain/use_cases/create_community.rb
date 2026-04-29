@@ -14,7 +14,7 @@ module CleanArch
               raise CleanArch::Domains::DomainError, e.message
             end
 
-            raise CleanArch::DomainError, "Nome já está em uso" if @community_repository.exists_by_name?(validated_name.value)
+            raise CleanArch::Domains::DomainError, "Nome já está em uso" if @community_repository.exists_by_name?(validated_name.value)
 
             community_entity = @community_repository.create(
               name:        validated_name.value,

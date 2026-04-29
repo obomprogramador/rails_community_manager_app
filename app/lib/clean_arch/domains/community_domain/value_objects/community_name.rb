@@ -5,7 +5,7 @@ module CleanArch
         class CommunityName
           MIN_LENGTH = 3
           MAX_LENGTH = 100
-          VALID_FORMAT = /\A[\w\s\-]+\z/
+          VALID_FORMAT = /\A[\w\s,\-]+\z/
 
           attr_reader :value
 

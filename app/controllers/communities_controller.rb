@@ -1,5 +1,5 @@
 class CommunitiesController < ApplicationController
-  CommunityDomain = CleanArch::Domains::CommunityDomain
+  CommunityDomain = ::CleanArch::Domains::CommunityDomain
 
   def index
     output = CommunityDomain::UseCases::ListCommunities.new(
@@ -20,7 +20,7 @@ class CommunitiesController < ApplicationController
     ).call(input_dto)
 
     render json: output.to_h, status: :created
-  rescue CleanArch::DomainError => e
+  rescue CleanArch::Domains::DomainError => e
     render json: { error: e.message }, status: :unprocessable_entity
   end
 
@@ -36,7 +36,7 @@ class CommunitiesController < ApplicationController
     ).call(input_dto)
 
     render json: output.to_h, status: :ok
-  rescue CleanArch::DomainError => e
+  rescue CleanArch::Domains::DomainError => e
     render json: { error: e.message }, status: :unprocessable_entity
   end
 
@@ -50,7 +50,7 @@ class CommunitiesController < ApplicationController
     ).call(input_dto)
 
     render json: output.map(&:to_h), status: :ok
-  rescue CleanArch::DomainError => e
+  rescue CleanArch::Domains::DomainError => e
     render json: { error: e.message }, status: :not_found
   end
 end
