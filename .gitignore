@@ -34,5 +34,3 @@
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 
-app/lib/clean_arch/domains/community_member_domain/*
-app/controllers/community_members_controller.rb
