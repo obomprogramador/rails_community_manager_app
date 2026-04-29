@@ -29,6 +29,14 @@ Rails.application.routes.draw do
         patch :ban
       end
     end
+
+    resources :messages, only: [:index, :create, :destroy] do
+      member do
+        post  :reply
+        get   :replies
+        patch :analyze_sentiment
+      end
+    end
   end
 
 end
