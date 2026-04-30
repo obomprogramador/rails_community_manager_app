@@ -36,6 +36,8 @@ Rails.application.routes.draw do
         get   :replies
         patch :analyze_sentiment
       end
+
+      resources :reactions, only: [:index, :create, :destroy]
     end
   end
 
