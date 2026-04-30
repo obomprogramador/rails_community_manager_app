@@ -13,3 +13,53 @@
  *= require_tree .
  *= require_self
  */
+
+/* Reset & Base */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #222; }
+
+/* Layout */
+.auth-container { max-width: 400px; margin: 10vh auto; padding: 2rem;
+  background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
+
+/* Botões */
+.btn { display: inline-block; padding: .5rem 1.25rem; border-radius: 8px;
+  border: none; cursor: pointer; font-size: .9rem; }
+.btn--primary { background: #4f46e5; color: #fff; }
+.btn--primary:hover { background: #4338ca; }
+.btn--sm { font-size: .8rem; padding: .3rem .75rem; }
+.btn--xs { font-size: .75rem; padding: .2rem .5rem; }
+
+/* Flash */
+.flash { padding: .75rem 1rem; border-radius: 8px; margin-bottom: 1rem; }
+.flash--notice { background: #d1fae5; color: #065f46; }
+.flash--alert  { background: #fee2e2; color: #991b1b; }
+
+/* Comunidades */
+.community-card { background: #fff; padding: 1rem; margin-bottom: .75rem;
+  border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+
+/* Mensagens */
+.message-item { background: #fff; padding: .875rem; margin-bottom: .5rem;
+  border-radius: 8px; border-left: 3px solid #4f46e5; }
+.message-header { display: flex; gap: .5rem; font-size: .8rem; color: #666;
+  margin-bottom: .4rem; }
+.message-content { line-height: 1.5; }
+.message-actions { display: flex; gap: .5rem; margin-top: .5rem; }
+
+/* Reações */
+.reactions-bar { display: flex; gap: .25rem; flex-wrap: wrap; }
+.reaction-btn { background: #f3f4f6; border: 1px solid #e5e7eb;
+  border-radius: 20px; padding: .2rem .6rem; cursor: pointer; font-size: 1rem; }
+.reaction-btn:hover { background: #e0e7ff; border-color: #818cf8; }
+
+/* Forms */
+.form-group { margin-bottom: 1rem; }
+.form-group input, .form-group textarea {
+  width: 100%; padding: .625rem .75rem; border: 1px solid #d1d5db;
+  border-radius: 8px; font-size: .95rem; }
+.form-group textarea { min-height: 80px; resize: vertical; }
+
+/* Alert de erro */
+.alert--error { background: #fef2f2; color: #b91c1c; padding: .75rem 1rem;
+  border-radius: 8px; margin-top: .5rem; }

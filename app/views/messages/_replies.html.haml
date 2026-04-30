@@ -1,0 +1,15 @@
+%turbo-frame{id: "replies_#{parent_message_id}"}
+  .replies-list
+    - if replies.any?
+      - replies.each do |reply|
+        = render "messages/reply", reply: reply
+    - else
+      %p.text-muted Nenhuma resposta ainda.
+
+  = form_with url: reply_community_message_path(community_id, parent_message_id),
+              method: :post,
+              data: { turbo_frame: "replies_#{parent_message_id}" } do |f|
+    = hidden_field_tag :user_id, session[:user_id]
+    .form-group
+      = f.text_area :content, placeholder: "Escreva uma resposta...", rows: 2
+    = f.submit "Responder", class: "btn btn--xs"

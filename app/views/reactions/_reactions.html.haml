@@ -1,0 +1,11 @@
+%div{id: "reactions_#{message_id}", class: "reactions-bar",
+     data: {
+       controller: "reactions-channel",
+       reactions_channel_message_id_value: message_id
+     }}
+  - ["like", "love", "haha", "wow", "sad", "angry"].each do |type|
+    = button_to "#{type_emoji(type)}",
+                community_message_reactions_path(@community_id, message_id),
+                params: {reaction_type: type, user_id: session[:user_id]},
+                data: {turbo_stream: true},
+                class: "reaction-btn"

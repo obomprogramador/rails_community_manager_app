@@ -1,0 +1,4 @@
+%li.community-card{id: "community_#{community.id}"}
+  %h3= community.name
+  %p= community.description
+  = link_to "Ver mensagens", community_messages_path(community.id), class: "btn btn--sm"

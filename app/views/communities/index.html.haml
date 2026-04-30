@@ -1,0 +1,17 @@
+%h1 Comunidades
+
+= form_with url: communities_path,
+            data: {controller: "community-form", turbo_frame: "_top"} do |f|
+  .form-group
+    = f.text_field :name, placeholder: "Nome da comunidade",
+                   data: {community_form_target: "name"}
+  .form-group
+    = f.text_area :description, placeholder: "Descrição",
+                  data: {community_form_target: "description"}
+  = f.submit "Criar Comunidade", class: "btn btn--primary"
+
+%turbo-frame#community_form_error
+
+%ul#communities_list{data: {controller: "communities-list"}}
+  - @communities.each do |community|
+    = render "community", community: community

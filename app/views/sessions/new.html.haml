@@ -1,0 +1,9 @@
+.auth-container
+  %h1 Community Manager
+  %p.subtitle Faça login para continuar
+
+  = form_with url: session_path, data: {controller: "auth-form", turbo: false} do |f|
+    .form-group
+      = f.label :username, "Nome de usuário"
+      = f.text_field :username, placeholder: "seu_usuario", data: {auth_form_target: "input"}
+    = f.submit "Entrar", class: "btn btn--primary"

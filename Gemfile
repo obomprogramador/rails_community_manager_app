@@ -41,6 +41,7 @@ group :development, :test do
 end
 
 group :development do
+  gem "html2haml"
   gem "web-console"
   gem "listen"
   gem "spring"

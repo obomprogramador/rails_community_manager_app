@@ -1,0 +1,12 @@
+%li.message-item{id: "message_#{message.id}"}
+  .message-header
+    %strong= message.respond_to?(:username) ? message.username : "Usuário"
+    %time= message.respond_to?(:created_at) ? message.created_at : ""
+  %p.message-content= message.content
+  .message-actions
+    = render "reactions/reactions", message_id: message.id
+    = link_to "Responder", replies_community_message_path(@community_id, message.id),
+          data: { turbo_frame: "replies_#{message.id}" },
+          class: "btn btn--xs"
+
+  %turbo-frame{id: "replies_#{message.id}"}

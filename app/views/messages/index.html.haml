@@ -1,0 +1,18 @@
+%h2 Mensagens da Comunidade
+
+%div{data: {
+  controller: "messages-channel",
+  messages_channel_community_id_value: @community_id
+}}
+  %ul#messages_list
+    - @messages.each do |message|
+      = render "message", message: message
+
+  = form_with url: community_messages_path(@community_id),
+              data: {controller: "message-form"} do |f|
+    = hidden_field_tag :user_id, session[:user_id]
+    .form-group
+      = f.text_area :content, placeholder: "Escreva sua mensagem...",
+                    data: {message_form_target: "content", action: "keydown.enter->message-form#submit"}
+    = f.submit "Enviar", class: "btn btn--primary",
+               data: {message_form_target: "submit"}

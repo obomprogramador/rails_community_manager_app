@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "sessions#new"
+
+  resource :session, only: [:new, :create, :destroy]
   
   resources :users, only: [:create, :destroy] do
     # Rota customizada para authenticate (GET ou POST)
