@@ -1,10 +1,17 @@
+# frozen_string_literal: true
+
+require "set"
+
 class CommunitiesController < ApplicationController
-  CommunityDomain = ::CleanArch::Domains::CommunityDomain
+  CommunityDomain       = ::CleanArch::Domains::CommunityDomain
+  CommunityMemberDomain = ::CleanArch::Domains::CommunityMemberDomain
 
   def index
     output = CommunityDomain::UseCases::ListCommunities.new(
       community_repository: CommunityDomain::Repositories::CommunityRepository.new
     ).call
+
+    assign_member_community_ids
 
     respond_to do |format|
       format.html { @communities = output }
@@ -24,10 +31,11 @@ class CommunitiesController < ApplicationController
 
     respond_to do |format|
       format.turbo_stream do
+        assign_member_community_ids
         render turbo_stream: turbo_stream.prepend(
           "communities_list",
           partial: "communities/community",
-          locals: { community: output }
+          locals: { community: output, member_community_ids: @member_community_ids }
         )
       end
 
@@ -52,6 +60,7 @@ class CommunitiesController < ApplicationController
           community_repository: CommunityDomain::Repositories::CommunityRepository.new
         ).call
 
+        assign_member_community_ids
         flash.now[:alert] = e.message
         render :index, status: :unprocessable_entity
       end
@@ -88,5 +97,18 @@ class CommunitiesController < ApplicationController
     render json: output.map(&:to_h), status: :ok
   rescue CleanArch::Domains::DomainError, ArgumentError => e
     render json: { error: e.message }, status: :not_found
+  end
+
+  private
+
+  def assign_member_community_ids
+    @member_community_ids =
+      if session[:user_id].present?
+        CommunityMemberDomain::UseCases::ListUserMemberships.new(
+          community_member_repository: CommunityMemberDomain::Repositories::CommunityMemberRepository.new
+        ).call(user_id: session[:user_id]).map(&:community_id).to_set
+      else
+        Set.new
+      end
   end
 end

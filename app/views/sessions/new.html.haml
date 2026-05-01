@@ -2,8 +2,15 @@
   %h1 Community Manager
   %p.subtitle Faça login para continuar
 
-  = form_with url: session_path, data: {controller: "auth-form", turbo: false} do |f|
+  = form_with url: session_path, data: { controller: "auth-form", action: "submit->auth-form#validate", turbo: false } do |f|
+    %p.form-error{ data: { auth_form_target: "error" }, hidden: true }
+
     .form-group
       = f.label :username, "Nome de usuário"
-      = f.text_field :username, placeholder: "seu_usuario", data: {auth_form_target: "input"}
-    = f.submit "Entrar", class: "btn btn--primary"
+      = f.text_field :username, placeholder: "seu_usuario", data: { auth_form_target: "input" }
+
+    = f.submit "Entrar", class: "btn btn--primary", data: { auth_form_target: "submit" }
+  
+  %p{ style: "margin-top: 12px;" }
+    Ainda não tem conta?
+    = link_to "Cadastre-se", new_user_path

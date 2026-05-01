@@ -1,0 +1,16 @@
+.auth-container
+  %h1 Community Manager
+  %p.subtitle Crie sua conta
+
+  = form_with url: users_path, data: { controller: "auth-form", action: "submit->auth-form#validate", turbo: false } do |f|
+    %p.form-error{ data: { auth_form_target: "error" }, hidden: true }
+
+    .form-group
+      = f.label :username, "Nome de usuário"
+      = f.text_field :username, placeholder: "novo_usuario", data: { auth_form_target: "input" }
+
+    = f.submit "Cadastrar", class: "btn btn--primary", data: { auth_form_target: "submit" }
+
+  %p{ style: "margin-top: 12px;" }
+    Já tem conta?
+    = link_to "Entrar", new_session_path

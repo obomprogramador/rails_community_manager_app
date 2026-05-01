@@ -21,9 +21,15 @@ class CommunityMembersController < ApplicationController
       community_member_repository: CommunityMemberDomain::Repositories::CommunityMemberRepository.new
     ).call(input_dto)
 
-    render json: output.to_h, status: :created
+    respond_to do |format|
+      format.html { redirect_back fallback_location: communities_path, notice: "Inscrição realizada com sucesso." }
+      format.json { render json: output.to_h, status: :created }
+    end
   rescue CleanArch::Domains::DomainError => e
-    render json: { error: e.message }, status: :unprocessable_entity
+    respond_to do |format|
+      format.html { redirect_back fallback_location: communities_path, alert: e.message }
+      format.json { render json: { error: e.message }, status: :unprocessable_entity }
+    end
   end
 
   def destroy

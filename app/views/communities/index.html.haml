@@ -14,4 +14,4 @@
 
 %ul#communities_list{data: {controller: "communities-list"}}
   - @communities.each do |community|
-    = render "community", community: community
+    = render "community", community: community, member_community_ids: @member_community_ids

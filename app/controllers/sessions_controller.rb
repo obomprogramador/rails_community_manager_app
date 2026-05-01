@@ -15,7 +15,8 @@ class SessionsController < ApplicationController
     session[:user_id]   = output.id
     session[:username]  = output.username
 
-    redirect_to communities_path, notice: "Bem-vindo, #{output.username}!"
+    # redirect_to communities_path, notice: "Bem-vindo, #{output.username}!"
+    redirect_to feed_path, notice: "Bem-vindo, #{output.username}!"
   rescue CleanArch::Domains::DomainError => e
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity

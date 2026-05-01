@@ -14,4 +14,10 @@
     = javascript_importmap_tags
   %body
     = render "layouts/flash"
+    - hide_nav = (controller_name == "sessions" && action_name == "new") || (controller_name == "users" && action_name == "new")
+    - if session[:user_id].present? && !hide_nav
+      %nav{ style: "display:flex; gap:12px; margin-bottom:16px;" }
+        = link_to "Feed", feed_path
+        = link_to "Comunidades", communities_path
+        = button_to "Sair", session_path, method: :delete
     = yield

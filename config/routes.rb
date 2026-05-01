@@ -12,10 +12,10 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "sessions#new"
 
+  get "feed", to: "feeds#index", as: :feed
+
   resource :session, only: [:new, :create, :destroy]
-  
-  resources :users, only: [:create, :destroy] do
-    # Rota customizada para authenticate (GET ou POST)
+  resources :users, only: [:new, :create, :destroy] do
     post :authenticate, on: :collection
   end
 
