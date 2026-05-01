@@ -12,11 +12,25 @@ RSpec.describe 'Communities API', type: :request do
   end
 
   describe 'POST /communities' do
+    let(:creator) { create(:user) }
+
     context 'quando dados válidos' do
       it 'cria a comunidade e retorna 201' do
-        post '/communities', params: { name: 'Rails Brasil', description: 'Comunidade Rails' }
+        post '/communities',
+             params: { name: 'Rails Brasil', description: 'Comunidade Rails' },
+             session: { user_id: creator.id }
         expect(response).to have_http_status(:created)
-        expect(JSON.parse(response.body)['name']).to eq('Rails Brasil')
+        body = JSON.parse(response.body)
+        expect(body['name']).to eq('Rails Brasil')
+        expect(body['creator_id']).to eq(creator.id)
+      end
+    end
+
+    context 'quando não autenticado' do
+      it 'retorna 422' do
+        post '/communities', params: { name: 'Rails Brasil', description: 'Comunidade Rails' }
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(JSON.parse(response.body)['error']).to match(/autenticado/)
       end
     end
 
@@ -24,7 +38,9 @@ RSpec.describe 'Communities API', type: :request do
       before { create(:community, name: 'Rails Brasil') }
 
       it 'retorna 422' do
-        post '/communities', params: { name: 'Rails Brasil' }
+        post '/communities',
+             params: { name: 'Rails Brasil' },
+             session: { user_id: creator.id }
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['error']).to match(/em uso/)
       end
@@ -32,7 +48,9 @@ RSpec.describe 'Communities API', type: :request do
 
     context 'quando nome inválido' do
       it 'retorna 422' do
-        post '/communities', params: { name: 'ab' }
+        post '/communities',
+             params: { name: 'ab' },
+             session: { user_id: creator.id }
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end

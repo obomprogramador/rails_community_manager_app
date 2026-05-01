@@ -5,8 +5,8 @@ RSpec.describe CleanArch::Domains::CommunityDomain::UseCases::ListCommunities do
   let(:use_case)             { described_class.new(community_repository: community_repository) }
   let(:entities) do
     [
-      CleanArch::Domains::CommunityDomain::Entities::CommunityEntity.new(id: 1, name: 'Rails Brasil'),
-      CleanArch::Domains::CommunityDomain::Entities::CommunityEntity.new(id: 2, name: 'Ruby Brasil')
+      CleanArch::Domains::CommunityDomain::Entities::CommunityEntity.new(id: 1, name: 'Rails Brasil', creator_id: 1),
+      CleanArch::Domains::CommunityDomain::Entities::CommunityEntity.new(id: 2, name: 'Ruby Brasil', creator_id: 1)
     ]
   end
 

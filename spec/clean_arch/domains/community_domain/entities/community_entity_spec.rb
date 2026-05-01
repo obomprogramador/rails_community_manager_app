@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe CleanArch::Domains::CommunityDomain::Entities::CommunityEntity do
   let(:community_entity) do
-    described_class.new(id: 1, name: 'Rails Brasil', description: 'Comunidade Rails')
+    described_class.new(id: 1, name: 'Rails Brasil', description: 'Comunidade Rails', creator_id: 10)
   end
 
   describe '#initialize' do
@@ -12,7 +12,7 @@ RSpec.describe CleanArch::Domains::CommunityDomain::Entities::CommunityEntity do
     end
 
     it 'aceita descrição nil' do
-      entity = described_class.new(id: 1, name: 'Rails Brasil')
+      entity = described_class.new(id: 1, name: 'Rails Brasil', creator_id: 10)
       expect(entity.description).to eq('')
     end
   end

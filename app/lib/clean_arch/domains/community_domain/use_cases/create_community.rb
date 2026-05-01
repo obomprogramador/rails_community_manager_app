@@ -18,7 +18,8 @@ module CleanArch
 
             community_entity = @community_repository.create(
               name:        validated_name.value,
-              description: input_dto.description
+              description: input_dto.description,
+              creator_id:  input_dto.creator_id
             )
 
             Dtos::CommunityOutputDto.new(community_entity)

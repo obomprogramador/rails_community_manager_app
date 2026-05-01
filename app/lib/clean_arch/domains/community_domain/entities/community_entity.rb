@@ -3,12 +3,13 @@ module CleanArch
     module CommunityDomain
       module Entities
         class CommunityEntity
-          attr_reader :id, :name, :description, :created_at
+          attr_reader :id, :name, :description, :creator_id, :created_at
 
-          def initialize(id:, name:, description: nil, created_at: Time.current)
+          def initialize(id:, name:, creator_id:, description: nil, created_at: Time.current)
             @id          = id
             @name        = ValueObjects::CommunityName.new(name)
             @description = ValueObjects::CommunityDescription.new(description)
+            @creator_id  = creator_id
             @created_at  = created_at
           end
 

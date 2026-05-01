@@ -7,7 +7,8 @@ RSpec.describe CleanArch::Domains::CommunityDomain::UseCases::UpdateCommunity do
     CleanArch::Domains::CommunityDomain::Entities::CommunityEntity.new(
       id:          1,
       name:        'Rails Brasil',
-      description: 'Comunidade Rails'
+      description: 'Comunidade Rails',
+      creator_id:  1
     )
   end
 

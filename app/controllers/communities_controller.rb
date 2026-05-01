@@ -20,14 +20,28 @@ class CommunitiesController < ApplicationController
   end
 
   def create
-    input_dto = CommunityDomain::Dtos::CreateCommunityInputDto.new(
-      name:        params[:name],
-      description: params[:description]
-    )
+    output = nil
 
-    output = CommunityDomain::UseCases::CreateCommunity.new(
-      community_repository: CommunityDomain::Repositories::CommunityRepository.new
-    ).call(input_dto)
+    Community.transaction do
+      input_dto = CommunityDomain::Dtos::CreateCommunityInputDto.new(
+        name:        params[:name],
+        description: params[:description],
+        creator_id:  session[:user_id]
+      )
+
+      output = CommunityDomain::UseCases::CreateCommunity.new(
+        community_repository: CommunityDomain::Repositories::CommunityRepository.new
+      ).call(input_dto)
+
+      CommunityMemberDomain::UseCases::JoinCommunity.new(
+        community_member_repository: CommunityMemberDomain::Repositories::CommunityMemberRepository.new
+      ).call(
+        CommunityMemberDomain::Dtos::JoinCommunityInputDto.new(
+          community_id: output.id,
+          user_id:      session[:user_id]
+        )
+      )
+    end
 
     respond_to do |format|
       format.turbo_stream do

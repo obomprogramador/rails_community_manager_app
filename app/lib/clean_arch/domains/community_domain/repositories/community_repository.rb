@@ -19,8 +19,8 @@ module CleanArch
             Community.exists?(name: name)
           end
 
-          def create(name:, description: nil)
-            record = Community.create!(name: name, description: description)
+          def create(name:, creator_id:, description: nil)
+            record = Community.create!(name: name, description: description, creator_id: creator_id)
             to_entity(record)
           rescue ActiveRecord::RecordInvalid => e
             raise CleanArch::Domains::DomainError, "Erro ao criar comunidade: #{e.message}"
@@ -56,6 +56,7 @@ module CleanArch
               id:          record.id,
               name:        record.name,
               description: record.description,
+              creator_id:  record.creator_id,
               created_at:  record.created_at
             )
           end
