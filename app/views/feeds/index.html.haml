@@ -30,7 +30,7 @@
             %p.message-content= message.content
 
             .message-actions
-              = link_to "Ver discussão", community_messages_path(message.community_id), class: "btn btn--xs"
+              = link_to "Ver discussão", replies_community_message_path(message.community_id, message.id), class: "btn btn--xs"
     - else
       %p Seu feed ainda está vazio.
       %p Entre em uma comunidade e publique para começar.

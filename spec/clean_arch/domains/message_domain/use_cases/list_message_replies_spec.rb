@@ -28,14 +28,17 @@ RSpec.describe CleanArch::Domains::MessageDomain::UseCases::ListMessageReplies d
         allow(message_repository).to receive(:list_replies).and_return(reply_entities)
       end
 
-      it 'retorna lista de MessageOutputDto' do
+      it 'retorna MessageThreadRepliesOutputDto' do
         output = use_case.call(message_id: 1)
-        expect(output).to all(be_a(CleanArch::Domains::MessageDomain::Dtos::MessageOutputDto))
+        expect(output).to be_a(CleanArch::Domains::MessageDomain::Dtos::MessageThreadRepliesOutputDto)
       end
 
-      it 'retorna a quantidade correta de respostas' do
+      it 'retorna mensagem pai e respostas como MessageOutputDto' do
         output = use_case.call(message_id: 1)
-        expect(output.size).to eq(2)
+        expect(output.parent_message).to be_a(CleanArch::Domains::MessageDomain::Dtos::MessageOutputDto)
+        expect(output.parent_message.id).to eq(1)
+        expect(output.replies).to all(be_a(CleanArch::Domains::MessageDomain::Dtos::MessageOutputDto))
+        expect(output.replies.size).to eq(2)
       end
     end
 

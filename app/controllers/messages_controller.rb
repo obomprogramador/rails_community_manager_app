@@ -94,7 +94,7 @@ class MessagesController < ApplicationController
       message_repository: MessageDomain::Repositories::MessageRepository.new
     ).call(input_dto)
   
-    replies_output = MessageDomain::UseCases::ListMessageReplies.new(
+    thread = MessageDomain::UseCases::ListMessageReplies.new(
       message_repository: MessageDomain::Repositories::MessageRepository.new
     ).call(message_id: params[:id])
   
@@ -106,7 +106,7 @@ class MessagesController < ApplicationController
           locals: {
             community_id: params[:community_id],
             parent_message_id: params[:id],
-            replies: replies_output
+            replies: thread.replies
           }
         )
       end
@@ -137,20 +137,28 @@ class MessagesController < ApplicationController
   end
 
   def replies
-    output = MessageDomain::UseCases::ListMessageReplies.new(
+    thread = MessageDomain::UseCases::ListMessageReplies.new(
       message_repository: MessageDomain::Repositories::MessageRepository.new
     ).call(message_id: params[:id])
   
     respond_to do |format|
       format.html do
-        render partial: "messages/replies",
-               locals: {
-                 community_id: params[:community_id],
-                 parent_message_id: params[:id],
-                 replies: output
-               }
+        frame_id = "replies_#{params[:id]}"
+        if request.headers["Turbo-Frame"] == frame_id
+          render partial: "messages/replies",
+                 locals: {
+                   community_id: params[:community_id],
+                   parent_message_id: params[:id],
+                   replies: thread.replies
+                 }
+        else
+          @community_id = params[:community_id]
+          @parent_message = thread.parent_message
+          @replies = thread.replies
+          render :replies
+        end
       end
-      format.json { render json: output.map(&:to_h), status: :ok }
+      format.json { render json: thread.to_h, status: :ok }
     end
   rescue CleanArch::Domains::DomainError => e
     respond_to do |format|

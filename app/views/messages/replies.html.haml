@@ -1,0 +1,19 @@
+- content_for :title, "Respostas"
+
+%nav.thread-nav{style: "margin-bottom: 1rem;"}
+  = link_to "← Voltar ao feed", feed_path
+
+%section.thread-parent.message-item
+  .message-header
+    %strong= @parent_message.respond_to?(:username) ? @parent_message.username : "Usuário"
+    %time= @parent_message.respond_to?(:created_at) ? @parent_message.created_at : ""
+  %p.message-content= @parent_message.content
+  .message-actions
+    = render "reactions/reactions", message_id: @parent_message.id
+
+%h3.thread-replies-heading{style: "margin-top: 1.5rem;"} Respostas
+
+= render "replies",
+         community_id: @community_id,
+         parent_message_id: @parent_message.id,
+         replies: @replies

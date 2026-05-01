@@ -63,10 +63,12 @@ RSpec.describe 'Messages API', type: :request do
   describe 'GET /communities/:community_id/messages/:id/replies' do
     before { create_list(:message, 2, community: community, user: user, parent_message_id: message.id) }
 
-    it 'retorna respostas da mensagem com status 200' do
-      get "/communities/#{community.id}/messages/#{message.id}/replies"
+    it 'retorna mensagem pai e respostas em JSON com status 200' do
+      get "/communities/#{community.id}/messages/#{message.id}/replies.json"
       expect(response).to have_http_status(:ok)
-      expect(JSON.parse(response.body).size).to eq(2)
+      data = JSON.parse(response.body)
+      expect(data['parent_message']['id']).to eq(message.id)
+      expect(data['replies'].size).to eq(2)
     end
   end
 

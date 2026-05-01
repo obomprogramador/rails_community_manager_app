@@ -14,10 +14,16 @@ module CleanArch
             
             raise CleanArch::Domains::DomainError, "Mensagem não encontrada" if parent.nil?
             raise CleanArch::Domains::DomainError, "Mensagem não aceita respostas pois é uma resposta" if parent.reply?
-            
-            @message_repository
+
+            parent_dto = Dtos::MessageOutputDto.new(parent)
+            reply_dtos = @message_repository
               .list_replies(message_id)
               .map { |entity| Dtos::MessageOutputDto.new(entity) }
+
+            Dtos::MessageThreadRepliesOutputDto.new(
+              parent_message: parent_dto,
+              replies: reply_dtos
+            )
           end
         end
       end
