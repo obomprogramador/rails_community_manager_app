@@ -3,7 +3,7 @@ module CleanArch
     module ReactionDomain
       module ValueObjects
         class ReactionType
-          TYPES = %w[like love insightful].freeze
+          TYPES = %w[like love haha wow sad angry insightful].freeze
 
           attr_reader :value
 
@@ -13,7 +13,7 @@ module CleanArch
           end
 
           def positive?
-            %w[like love insightful].include?(value)
+            TYPES.include?(value)
           end
 
           def ==(other)

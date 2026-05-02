@@ -1,11 +1,34 @@
+- community_id = local_assigns[:community_id] || @community_id
+- current_user_id = session[:user_id]
+- user_reaction = local_assigns[:user_reaction]
+- print "\n\n\n\n"
+- pp "PARTIAL REACTIONS HAML"
+- pp user_reaction
+- print "\n\n\n\n"
+
 %div{id: "reactions_#{message_id}", class: "reactions-bar",
      data: {
        controller: "reactions-channel",
        reactions_channel_message_id_value: message_id
      }}
-  - ["like", "love", "haha", "wow", "sad", "angry"].each do |type|
-    = button_to "#{type_emoji(type)}",
-                community_message_reactions_path(@community_id, message_id),
-                params: {reaction_type: type, user_id: session[:user_id]},
-                data: {turbo_stream: true},
-                class: "reaction-btn"
+  - if user_reaction
+    %div{data: {controller: "reaction-toggle"}}
+      = button_to "#{type_emoji(user_reaction)}",
+                  community_message_reactions_path(community_id, message_id),
+                  params: {reaction_type: user_reaction, user_id: current_user_id},
+                  data: {turbo: true, action: "reaction-toggle#toggle"},
+                  class: "reaction-btn reaction-btn--selected"
+      %div{data: {reaction_toggle_target: "options"}, class: "reaction-options hidden"}
+        - ["like", "love", "haha", "wow", "sad", "angry"].each do |type|
+          = button_to "#{type_emoji(type)}",
+                      community_message_reactions_path(community_id, message_id),
+                      params: {reaction_type: type, user_id: current_user_id},
+                      data: {turbo: true},
+                      class: "reaction-btn"
+  - else
+    - ["like", "love", "haha", "wow", "sad", "angry"].each do |type|
+      = button_to "#{type_emoji(type)}",
+                  community_message_reactions_path(community_id, message_id),
+                  params: {reaction_type: type, user_id: current_user_id},
+                  data: {turbo: true},
+                  class: "reaction-btn"

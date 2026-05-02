@@ -137,6 +137,11 @@ class MessagesController < ApplicationController
   end
 
   def replies
+    puts "\n\n\n\n"
+    pp "PASSOU NO REPLIES DO MESSAGES CONTROLLER"
+    pp session[:user_id]
+    pp Reaction.find_by(message_id: 1, user_id: session[:user_id])&.reaction_type
+    puts "\n\n\n\n"
     thread = MessageDomain::UseCases::ListMessageReplies.new(
       message_repository: MessageDomain::Repositories::MessageRepository.new
     ).call(message_id: params[:id])
