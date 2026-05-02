@@ -4,7 +4,7 @@ module CleanArch
       module Repositories
         class MessageRepository
           def find(id)
-            record = Message.find_by(id: id)
+            record = Message.includes(:user).find_by(id: id)
             return nil if record.nil?
             to_entity(record)
           end
@@ -56,6 +56,7 @@ module CleanArch
             Entities::MessageEntity.new(
               id:                record.id,
               user_id:           record.user_id,
+              username:          record.user&.username,
               community_id:      record.community_id,
               parent_message_id: record.parent_message_id,
               content:           record.content,

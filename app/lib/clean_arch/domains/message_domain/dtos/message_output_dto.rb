@@ -3,12 +3,13 @@ module CleanArch
     module MessageDomain
       module Dtos
         class MessageOutputDto
-          attr_reader :id, :user_id, :community_id, :parent_message_id,
+          attr_reader :id, :user_id, :username, :community_id, :parent_message_id,
                       :content, :user_ip, :sentiment_score, :created_at
 
           def initialize(entity)
             @id                = entity.id
             @user_id           = entity.user_id
+            @username          = entity.username
             @community_id      = entity.community_id
             @parent_message_id = entity.parent_message_id
             @content           = entity.content
@@ -20,7 +21,7 @@ module CleanArch
           def to_h
             {
               id:                @id,
-              user_id:           @user_id,
+              user:              { id: @user_id, username: @username },
               community_id:      @community_id,
               parent_message_id: @parent_message_id,
               content:           @content,

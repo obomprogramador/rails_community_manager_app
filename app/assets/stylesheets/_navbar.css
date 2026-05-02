@@ -1,0 +1,89 @@
+:root {
+  --nav-bg-color: #dc2626;
+  --nav-text-color: #ffffff;
+  --nav-hover-color: #fca5a5;
+  --nav-padding-y: 0.75rem;
+  --nav-padding-x: 1.5rem;
+}
+
+/* Container Principal da Navbar */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--nav-bg-color);
+  color: var(--nav-text-color);
+  padding: var(--nav-padding-y) var(--nav-padding-x);
+  border-radius: 8px;
+  margin: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: sans-serif;
+  position: relative;
+}
+
+/* Área Esquerda (Botão Sair) */
+.nav-left {
+  flex: 0 0 auto;
+}
+
+/* Área Central (Links do Menu) */
+.nav-center {
+  display: flex;
+  gap: 2rem;
+  flex: 1;
+  justify-content: flex-start;
+  padding-left: 50vh;
+}
+
+/* Estilo dos Links */
+.nav-link {
+  color: var(--nav-text-color);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--nav-hover-color);
+}
+
+/* Responsividade: Em telas pequenas, empilha o menu */
+@media (max-width: 600px) {
+  .top-nav {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+  
+  .nav-center {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .nav-left, .nav-right {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Estilo do Texto de Saudação */
+.user-greeting {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.hello-section {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}

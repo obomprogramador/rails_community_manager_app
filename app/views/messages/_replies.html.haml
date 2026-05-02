@@ -1,10 +1,14 @@
 %turbo-frame{id: "replies_#{parent_message_id}"}
+  - puts "\n\n\n\n"
+  - pp replies
+  - puts "\n\n\n\n"
   .replies-list
     - if replies.any?
       - replies.each do |reply|
         = render "messages/reply", reply: reply
     - else
-      %p.text-muted Nenhuma resposta ainda.
+      .card-empty
+        %p.text-muted Nenhuma resposta ainda.
 
   = form_with url: reply_community_message_path(community_id, parent_message_id),
               method: :post,

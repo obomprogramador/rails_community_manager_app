@@ -2,12 +2,6 @@ class ReactionsController < ApplicationController
   ReactionDomain = CleanArch::Domains::ReactionDomain
 
   def index
-    puts "\n\n\n\n"
-    pp "PASSOU NO INDEX DO REACTIONS CONTROLLER"
-    pp session[:user_id]
-    pp Reaction.find_by(message_id: 1, user_id: session[:user_id])&.reaction_type
-    puts "\n\n\n\n"
-    
     output = ReactionDomain::UseCases::ListMessageReactions.new(
       reaction_repository: ReactionDomain::Repositories::ReactionRepository.new
     ).call(message_id: params[:message_id])
@@ -18,11 +12,6 @@ class ReactionsController < ApplicationController
   end
 
   def create
-    puts "\n\n\n\n"
-    pp "PASSOU NO CREATE DO REACTIONS CONTROLLER"
-    pp session[:user_id]
-    pp Reaction.find_by(message_id: 1, user_id: session[:user_id])&.reaction_type
-    puts "\n\n\n\n"
     repository = ReactionDomain::Repositories::ReactionRepository.new
     message_id = params[:message_id]
     user_id    = params[:user_id]

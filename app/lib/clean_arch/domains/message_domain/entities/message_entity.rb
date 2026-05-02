@@ -3,13 +3,14 @@ module CleanArch
     module MessageDomain
       module Entities
         class MessageEntity
-          attr_reader :id, :user_id, :community_id, :parent_message_id,
+          attr_reader :id, :user_id, :username, :community_id, :parent_message_id,
                       :content, :user_ip, :sentiment_score, :created_at
 
           def initialize(id:, user_id:, community_id:, content:, user_ip:,
-                         parent_message_id: nil, sentiment_score: nil, created_at: Time.current)
+                         username: nil, parent_message_id: nil, sentiment_score: nil, created_at: Time.current)
             @id                = id
             @user_id           = user_id
+            @username          = username
             @community_id      = community_id
             @parent_message_id = parent_message_id
             @content           = ValueObjects::MessageContent.new(content)

@@ -1,7 +1,9 @@
 - content_for :title, "Respostas"
 
+%h1 Discussão pegando fogo!
+
 %nav.thread-nav{style: "margin-bottom: 1rem;"}
-  = link_to "← Voltar ao feed", feed_path
+  = button_to "← Voltar ao feed", feed_path, method: :get, class: "btn-backfeed"
 
 %section.thread-parent.message-item
   .message-header

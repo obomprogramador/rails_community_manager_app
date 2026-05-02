@@ -1,0 +1,18 @@
+/* Mensagens card */
+.message-item { background: #ffefe1; padding: .875rem; margin-bottom: .5rem;
+  border-radius: 8px; border-left: 3px solid #00E5FF; }
+.message-header { display: flex; gap: .5rem; font-size: .8rem; color: #b2b2b2;
+  margin-bottom: .4rem; }
+.message-content { line-height: 1.5; }
+.message-actions { display: flex; gap: .5rem; margin-top: .5rem; }
+
+/* Mensagens replies card */
+.message-reply-item { background: #fff; padding: .875rem; margin-bottom: .5rem;
+  border-radius: 8px; border-left: 3px solid #ff0000; }
+
+.card-empty {
+  display: flex;
+  color: #b2b2b2;
+  padding: 30px;
+  justify-content: center;
+}

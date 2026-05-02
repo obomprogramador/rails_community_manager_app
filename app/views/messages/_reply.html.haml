@@ -1,4 +1,6 @@
 .reply-item{id: "message_#{reply.id}"}
-  %strong= reply.respond_to?(:username) ? reply.username : "Usuário"
-  %time= reply.respond_to?(:created_at) ? reply.created_at : ""
-  %p= reply.content
+  %section.thread-parent.message-reply-item
+    .message-header
+      %strong= reply.respond_to?(:username) ? reply.username : "Usuário"
+      %time= reply.respond_to?(:created_at) ? reply.created_at : ""
+    %p.message-content= reply.content

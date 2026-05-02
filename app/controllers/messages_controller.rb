@@ -111,7 +111,10 @@ class MessagesController < ApplicationController
         )
       end
       format.html do
-        redirect_to community_messages_path(params[:community_id]),
+        redirect_to replies_community_message_path(
+                      params[:community_id],
+                      params[:id]
+                    ),
                     notice: "Resposta enviada com sucesso."
       end
       format.json { render json: output.to_h, status: :created }
@@ -130,18 +133,20 @@ class MessagesController < ApplicationController
         ), status: :unprocessable_entity
       end
       format.html do
-        redirect_to community_messages_path(params[:community_id]), alert: e.message
+        redirect_to replies_community_message_path(
+                      params[:community_id],
+                      params[:id]
+                    ),
+                    alert: e.message
       end
-      format.json { render json: { error: e.message }, status: :unprocessable_entity }
+      format.json {
+        render json: { error: e.message },
+        status: :unprocessable_entity
+      }
     end
   end
 
   def replies
-    puts "\n\n\n\n"
-    pp "PASSOU NO REPLIES DO MESSAGES CONTROLLER"
-    pp session[:user_id]
-    pp Reaction.find_by(message_id: 1, user_id: session[:user_id])&.reaction_type
-    puts "\n\n\n\n"
     thread = MessageDomain::UseCases::ListMessageReplies.new(
       message_repository: MessageDomain::Repositories::MessageRepository.new
     ).call(message_id: params[:id])

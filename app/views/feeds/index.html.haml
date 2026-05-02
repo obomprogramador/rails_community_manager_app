@@ -1,22 +1,7 @@
-%h1 Feed
+%h1 Últimas mensagens
 
 .feed-layout{ style: "display:flex; gap:24px; align-items:flex-start;" }
-  %aside{ style: "min-width:280px;" }
-    %h2 Suas comunidades
-    - if @communities.any?
-      %ul
-        - @communities.each do |community|
-          %li
-            = link_to community.name, community_messages_path(community.id), class: "btn btn--sm"
-    - else
-      %p Você ainda não participa de comunidades.
-      = link_to "Explorar comunidades", communities_path, class: "btn btn--primary"
-
   %section{ style: "flex:1;" }
-    .feed-header{ style: "display:flex; justify-content:space-between; align-items:center;" }
-      %h2 Últimas mensagens
-      = link_to "Ver comunidades", communities_path, class: "btn btn--sm"
-
     - if @messages.any?
       %ul#feed_messages_list
         - @messages.each do |message|

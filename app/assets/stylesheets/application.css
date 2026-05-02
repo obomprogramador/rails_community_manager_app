@@ -15,20 +15,12 @@
  */
 
 /* Reset & Base */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0;}
 body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #222; }
 
 /* Layout */
 .auth-container { max-width: 400px; margin: 10vh auto; padding: 2rem;
   background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.1); }
-
-/* Botões */
-.btn { display: inline-block; padding: .5rem 1.25rem; border-radius: 8px;
-  border: none; cursor: pointer; font-size: .9rem; }
-.btn--primary { background: #4f46e5; color: #fff; }
-.btn--primary:hover { background: #4338ca; }
-.btn--sm { font-size: .8rem; padding: .3rem .75rem; }
-.btn--xs { font-size: .75rem; padding: .2rem .5rem; }
 
 /* Flash */
 .flash { padding: .75rem 1rem; border-radius: 8px; margin-bottom: 1rem; }
@@ -38,14 +30,6 @@ body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #222; }
 /* Comunidades */
 .community-card { background: #fff; padding: 1rem; margin-bottom: .75rem;
   border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-
-/* Mensagens */
-.message-item { background: #fff; padding: .875rem; margin-bottom: .5rem;
-  border-radius: 8px; border-left: 3px solid #4f46e5; }
-.message-header { display: flex; gap: .5rem; font-size: .8rem; color: #666;
-  margin-bottom: .4rem; }
-.message-content { line-height: 1.5; }
-.message-actions { display: flex; gap: .5rem; margin-top: .5rem; }
 
 /* Reações */
 .reactions-bar { display: flex; gap: .25rem; flex-wrap: wrap; }
@@ -81,3 +65,30 @@ body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #222; }
 .hidden {
   display: none;
 }
+
+.container-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1rem;
+  gap: 10px
+}
+
+.container-center > * {
+  width: 100%;
+  max-width: 600px;
+}
+
+ul, ol {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+@import "_navbar.css";
+@import "_buttons.css";
+@import "_message-card.css";
