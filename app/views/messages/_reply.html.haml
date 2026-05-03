@@ -2,5 +2,6 @@
   %section.thread-parent.message-reply-item
     .message-header
       %strong= reply.respond_to?(:username) ? reply.username : "Usuário"
-      %time= reply.respond_to?(:created_at) ? reply.created_at : ""
+      %time{ datetime: (reply.created_at&.iso8601 || "") }
+        = reply.created_at&.strftime("%d/%m/%Y %H:%M") || "-"
     %p.message-content= reply.content

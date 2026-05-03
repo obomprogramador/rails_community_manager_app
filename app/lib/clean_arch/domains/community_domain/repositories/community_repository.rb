@@ -53,11 +53,12 @@ module CleanArch
 
           def to_entity(record)
             Entities::CommunityEntity.new(
-              id:          record.id,
-              name:        record.name,
-              description: record.description,
-              creator_id:  record.creator_id,
-              created_at:  record.created_at
+              id:             record.id,
+              name:           record.name,
+              description:    record.description,
+              total_messages: record.total_messages,
+              creator_id:     record.creator_id,
+              created_at:     record.created_at
             )
           end
         end

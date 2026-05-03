@@ -44,6 +44,15 @@ module CleanArch
                    .map { |record| to_entity(record) }
           end
 
+          def list_by_community_paginated(community_id, page, per_page)
+            Message.includes(:user)
+                  .where(community_id: community_id, parent_message_id: nil)
+                  .order(created_at: :desc)
+                  .offset((page - 1) * per_page)
+                  .limit(per_page)
+                  .map { |record| to_entity(record) }
+          end
+
           def list_replies(parent_message_id)
             Message.where(parent_message_id: parent_message_id)
                    .order(created_at: :asc)

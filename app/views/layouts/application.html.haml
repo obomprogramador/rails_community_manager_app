@@ -15,18 +15,16 @@
   %body
     = render "layouts/flash_messages"
     - hide_nav = (controller_name == "sessions" && action_name == "new") || (controller_name == "users" && action_name == "new")
-    - puts "\n\n\n\n"
-    - pp session.to_h
-    - puts "\n\n\n\n"
     - if session[:user_id].present? && !hide_nav
-      %nav.top-nav
-        .nav-left
-          .hello-section
-            %span.user-greeting
-              Olá, #{session[:username]}
-            = button_to "Sair", session_path, method: :delete, class: "btn-logout"
-        .nav-center
-          = link_to "Feed", feed_path, class: "nav-link"
-          = link_to "Comunidades", communities_path, class: "nav-link"
+      %div.fixed-top-nav-container
+        %nav.top-nav
+          .nav-left
+            .hello-section
+              %span.user-greeting
+                Olá, #{session[:username]}
+              = button_to "Sair", session_path, method: :delete, class: "btn-logout"
+          .nav-center
+            = link_to "Feed", feed_path, class: "nav-link"
+            = link_to "Comunidades", communities_path, class: "nav-link"
     .container-center
       = yield

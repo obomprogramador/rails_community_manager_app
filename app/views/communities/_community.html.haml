@@ -3,8 +3,6 @@
   %p= community.description
 
   .message-actions
-    = link_to "Ver mensagens", community_messages_path(community.id), class: "btn btn--sm"
-
     - if session[:user_id].present?
       - if member_community_ids.include?(community.id)
         = button_tag "Já inscrito",
@@ -17,3 +15,8 @@
           method: :post,
           params: { user_id: session[:user_id] },
           class: "btn btn--sm btn--primary"
+    
+    = link_to "Ver mensagens", community_messages_path(community.id), class: "btn btn--sm"
+
+    %span
+      = "#{community.total_messages} Mensagens totais."

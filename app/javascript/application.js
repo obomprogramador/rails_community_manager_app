@@ -1,2 +1,2 @@
 import "@hotwire/turbo-rails"
-import "controllers/index"
+import "./controllers/index"

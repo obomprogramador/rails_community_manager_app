@@ -1,0 +1,33 @@
+.fixed-form-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  padding: 1rem;
+  box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.1);
+  display: block; /* Remove flex se estiver herdando */
+}
+
+.form-container-content{
+  display: flex;
+  flex-direction: column;
+  padding-left: 35%;
+  padding-right: 35%;
+}
+
+.form-container-content form {
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.form-container-content textarea {
+  flex: 1; /* Ocupa espaço disponível */
+  min-height: 60px;
+}
+
+.form-container-content button {
+  align-self: flex-end; /* Botão à direita */
+}

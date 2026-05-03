@@ -14,6 +14,11 @@ module CleanArch
               .list_by_community(community_id)
               .map { |entity| Dtos::MessageOutputDto.new(entity) }
           end
+
+          def call_paginated(community_id:, page:, per_page:)
+            @message_repository
+              .list_by_community_paginated(community_id, page, per_page)
+          end
         end
       end
     end

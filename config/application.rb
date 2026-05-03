@@ -33,5 +33,8 @@ module SocialMedia001
     # config.autoload_paths += %W(#{config.root}/app/lib)
     config.eager_load_paths << Rails.root.join('lib')
     config.autoload_paths << Rails.root.join('lib')
+
+    config.time_zone = 'Brasilia'
+    config.active_record.default_timezone = :local
   end
 end

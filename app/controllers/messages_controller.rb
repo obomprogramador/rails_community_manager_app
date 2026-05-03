@@ -1,16 +1,25 @@
 class MessagesController < ApplicationController
-  MessageDomain = CleanArch::Domains::MessageDomain
+  MessageDomain   = CleanArch::Domains::MessageDomain
+  CommunityDomain = CleanArch::Domains::CommunityDomain
 
   def index
+    community_id = params.require(:community_id)
+    page         = params.fetch(:page, 1).to_i
+    per_page     = params.fetch(:per_page, 50).to_i
+
     output = MessageDomain::UseCases::ListCommunityMessages.new(
       message_repository: MessageDomain::Repositories::MessageRepository.new
-    ).call(community_id: params[:community_id])
+    ).call_paginated(community_id: community_id, page: page, per_page: per_page)
+
+    output_community = CommunityDomain::UseCases::ListCommunities.new(
+      community_repository: CommunityDomain::Repositories::CommunityRepository.new
+    ).find_by_id(params[:community_id])
   
-    @community_id = params[:community_id]
+    @community_data = output_community
     @messages = output
   
     respond_to do |format|
-      format.html # renderiza app/views/messages/index.html.haml
+      format.html
       format.json { render json: output.map(&:to_h), status: :ok }
     end
   rescue CleanArch::Domains::DomainError => e

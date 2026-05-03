@@ -1,18 +1,28 @@
-%h2 Mensagens da Comunidade
+%div.message-board
+  %h2
+    = "Mensagens da Comunidade - "
+    = @community_data.name
 
-%div{data: {
-  controller: "messages-channel",
-  messages_channel_community_id_value: @community_id
-}}
-  %ul#messages_list
-    - @messages.each do |message|
-      = render "message", message: message
+  %span{ style: "color: grey; font-size: 10px;" }
+    = @community_data.description
 
-  = form_with url: community_messages_path(@community_id),
-              data: {controller: "message-form"} do |f|
-    = hidden_field_tag :user_id, session[:user_id]
-    .form-group
-      = f.text_area :content, placeholder: "Escreva sua mensagem...",
-                    data: {message_form_target: "content", action: "keydown.enter->message-form#submit"}
-    = f.submit "Enviar", class: "btn btn--primary",
-               data: {message_form_target: "submit"}
+  %div{
+    data: {
+      controller: "messages-channel",
+      messages_channel_community_id_value: @community_data.id
+    }
+  }
+    %ul#messages_list
+      - @messages.each do |message|
+        = render "message", message: message
+
+    %div.fixed-form-container
+      %div.form-container-content
+        = form_with url: community_messages_path(@community_data.id),
+                    data: {controller: "message-form"} do |f|
+          = hidden_field_tag :user_id, session[:user_id]
+          .form-group
+            = f.text_area :content, placeholder: "Escreva sua mensagem...",
+                          data: {message_form_target: "content", action: "keydown.enter->message-form#submit"}
+          = f.submit "Enviar", class: "btn btn--primary",
+                    data: {message_form_target: "submit"}

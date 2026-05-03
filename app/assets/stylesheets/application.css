@@ -92,3 +92,5 @@ ul, ol {
 @import "_navbar.css";
 @import "_buttons.css";
 @import "_message-card.css";
+@import "_message-form.css";
+@import "_message-board.css";

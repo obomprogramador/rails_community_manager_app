@@ -8,13 +8,14 @@
 %section.thread-parent.message-item
   .message-header
     %strong= @parent_message.respond_to?(:username) ? @parent_message.username : "Usuário"
-    %time= @parent_message.respond_to?(:created_at) ? @parent_message.created_at : ""
+    %time{ datetime: (@parent_message.created_at&.iso8601 || "") }
+      = @parent_message.created_at&.strftime("%d/%m/%Y %H:%M") || "-"
   %p.message-content= @parent_message.content
   .message-actions
     = render "reactions/reactions", 
-           message_id: @parent_message.id, 
-           community_id: @community_id,
-           user_reaction: Reaction.find_by(message_id: @parent_message.id, user_id: session[:user_id])&.reaction_type
+             message_id: @parent_message.id, 
+             community_id: @community_id,
+             user_reaction: Reaction.find_by(message_id: @parent_message.id, user_id: session[:user_id])&.reaction_type
 
 %h3.thread-replies-heading{style: "margin-top: 1.5rem;"} Respostas
 

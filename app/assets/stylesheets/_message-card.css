@@ -4,7 +4,13 @@
 .message-header { display: flex; gap: .5rem; font-size: .8rem; color: #b2b2b2;
   margin-bottom: .4rem; }
 .message-content { line-height: 1.5; }
-.message-actions { display: flex; gap: .5rem; margin-top: .5rem; }
+.message-actions {
+  display: flex;
+  gap: .5rem;
+  margin-top: .5rem;
+  align-items: center;
+  padding: 0;
+}
 
 /* Mensagens replies card */
 .message-reply-item { background: #fff; padding: .875rem; margin-bottom: .5rem;
