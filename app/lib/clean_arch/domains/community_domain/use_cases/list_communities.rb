@@ -12,11 +12,11 @@ module CleanArch
           end
 
           def find_by_id(id)
-            raise CleanArch::DomainError, "id é obrigatório" if id.blank?
+            raise CleanArch::Domains::DomainError, "id é obrigatório" if id.blank?
 
             entity = @community_repository.find(id)
 
-            raise CleanArch::DomainError, "Comunidade não encontrada" if entity.nil?
+            raise CleanArch::Domains::DomainError, "Comunidade não encontrada" if entity.nil?
 
             Dtos::CommunityOutputDto.new(entity)
           end

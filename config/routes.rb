@@ -47,8 +47,7 @@ Rails.application.routes.draw do
   # API
   namespace :api do
     namespace :v1 do
-      resources :communities, only: [:index, :create, :update]
-      resources :messages, only: [:index, :create, :destroy]
+      resources :messages, only: [:index, :create]
     end
   end
 
