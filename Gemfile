@@ -52,5 +52,6 @@ group :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "capybara"
-  gem "selenium-webdriver"
+  gem 'selenium-webdriver', '~> 4.21'
+  gem 'database_cleaner-active_record'
 end

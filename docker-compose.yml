@@ -25,6 +25,18 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/social_media_001_development
+      DOCKER: "true"
+    networks:
+      - app_network
+  
+  selenium:
+    image: selenium/standalone-chrome:120.0
+    shm_size: 2gb
+    ports:
+      - "4444:4444"
+      - "7900:7900"
+    environment:
+      - SE_VNC_PASSWORD=test123
     networks:
       - app_network
 
