@@ -2,9 +2,11 @@ puts "🔥 CAPYBARA CONFIG CARREGADA"
 require 'rails_helper'
 
 RSpec.feature "Session", type: :feature do
-  let(:user) { create(:user, :with_username) }
+  let!(:user) { create(:user, :with_username) }
 
   scenario "usuário faz login com sucesso", js: true do
+    current_user = user
+
     # Dado (Given)
     visit new_session_path
     
@@ -14,34 +16,33 @@ RSpec.feature "Session", type: :feature do
     expect(page).to have_field("Nome de usuário")
     expect(page).to have_button("Entrar")
 
-    sleep 5
-
     # Quando (When) - Ação do usuário
-    fill_in "Nome de usuário", with: "john_doe"
-
-    binding.pry
+    fill_in "Nome de usuário", with: current_user.username
     
     click_button "Entrar"
 
     # Então (Then) - Resultado esperado
     # O Rails redireciona para o feed ou home após login
     expect(page).to have_current_path(feed_path) 
-    expect(page).to have_content("Olá, john_doe") # Verifica se a sessão foi criada
+    expect(page).to have_content("Olá, #{current_user.username}") # Verifica se a sessão foi criada
   end
 
   scenario "usuário tenta login com credenciais inválidas", js: true do
+    current_user = user
+
     # Dado (Given)
     visit new_session_path
 
-    # Então (Then) - Preenche nome de usuário inesistente
-    fill_in "Nome de usuário", with: "usuario_inexistente"
+    # Então (Then) - Preenche nome de usuário inexistente
+    fill_in "Nome de usuário", with: "#{current_user.username}_inexistente"
     
     click_button "Entrar"
 
-    # Verifica se a mensagem de erro apareceu (interação com Stimulus)
-    # O Stimulus deve tornar visível o elemento com data-target="error"
-    expect(page).to have_selector(".form-error", visible: true)
-    expect(page).to have_content("Credenciais inválidas") # Ou a mensagem que seu backend retorna
+    # Espera o elemento aparecer (Stimulus pode ter delay)
+    expect(page).to have_selector('.flash.flash--alert', visible: true, wait: 5)
+    
+    # Verifica o conteúdo da mensagem de erro
+    expect(page).to have_content('Usuário não encontrado')
   end
 
   scenario "usuário navega para a página de cadastro", js: true do

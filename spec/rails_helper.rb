@@ -1,3 +1,14 @@
+require 'simplecov'
+SimpleCov.start 'rails' do
+  add_filter '/spec/'
+  add_filter '/config/'
+  add_filter '/vendor/'
+
+  add_group 'Controllers', 'app/controllers'
+  add_group 'Models',      'app/models'
+  add_group 'Use Cases',   'app/lib/clean_arch'
+end
+
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
@@ -28,6 +39,12 @@ require 'rspec/rails'
 require 'factory_bot_rails'
 require 'database_cleaner/active_record'
 
+module RequestSessionHelper
+  def sign_in(user)
+    post '/session', params: { username: user.username }, as: :json
+  end
+end
+
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
@@ -38,10 +55,24 @@ RSpec.configure do |config|
   # Config Selenium
   config.before(:each, type: :feature, js: true) do
     Capybara.current_driver = :selenium_chrome_remote
+
+    # Isso garante que o servidor Puma use a mesma conexão de banco que o teste
+    # permitindo que o usuário criado pelo FactoryBot seja visível para o Selenium
+    ActiveRecord::ConnectionAdapters::ConnectionPool.class_eval do
+      def current_thread_id
+        Thread.main.object_id
+      end
+    end
   end
 
   config.after(:each, type: :feature, js: true) do
     Capybara.use_default_driver
+  end
+
+  config.before(:each, type: :feature) do
+    # Garante que as conexões sejam compartilhadas entre threads se necessário
+    # No Rails 7+ isso geralmente é tratado, mas em Docker ajuda forçar
+    ActiveRecord::Base.shared_connection = ActiveRecord::Base.connection
   end
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
@@ -52,9 +83,9 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.before(:each, type: :feature, js: true) do
-    self.use_transactional_tests = false
-  end
+  # config.before(:each, type: :feature, js: true) do
+  #   self.use_transactional_tests = false
+  # end
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
@@ -85,7 +116,7 @@ RSpec.configure do |config|
   end
 
   config.include FactoryBot::Syntax::Methods
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   config.before(:suite) do
     DatabaseCleaner.allow_remote_database_url = true
@@ -107,6 +138,15 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+
+  config.include RequestSessionHelper, type: :request
 end
 
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
+class ActiveRecord::Base
+  mattr_accessor :shared_connection
+  def self.connection
+    @@shared_connection || retrieve_connection
+  end
+end

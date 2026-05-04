@@ -45,6 +45,12 @@ class MessagesController < ApplicationController
     output = MessageDomain::UseCases::PostMessage.new(
       message_repository: MessageDomain::Repositories::MessageRepository.new
     ).call(input_dto)
+
+    output_community = CommunityDomain::UseCases::ListCommunities.new(
+      community_repository: CommunityDomain::Repositories::CommunityRepository.new
+    ).find_by_id(params[:community_id])
+  
+    @community_data = output_community
   
     ActionCable.server.broadcast(
       "community_messages_#{params[:community_id]}",

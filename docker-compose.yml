@@ -25,7 +25,10 @@ services:
       - db
     environment:
       DATABASE_URL: postgres://postgres:postgres@db:5432/social_media_001_development
+      # DATABASE_URL: postgres://postgres:postgres@db:5432/social_media_001_test
       DOCKER: "true"
+      # RAILS_ENV: test
+      RAILS_ENV: development
     networks:
       - app_network
   

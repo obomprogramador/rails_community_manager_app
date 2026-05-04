@@ -5,7 +5,7 @@ RSpec.describe 'Communities API', type: :request do
     before { create_list(:community, 3) }
 
     it 'retorna todas as comunidades com status 200' do
-      get '/communities'
+      get '/communities', as: :json
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body).size).to eq(3)
     end
@@ -15,10 +15,12 @@ RSpec.describe 'Communities API', type: :request do
     let(:creator) { create(:user) }
 
     context 'quando dados válidos' do
+      before { sign_in(creator) }
+
       it 'cria a comunidade e retorna 201' do
         post '/communities',
              params: { name: 'Rails Brasil', description: 'Comunidade Rails' },
-             session: { user_id: creator.id }
+             as: :json
         expect(response).to have_http_status(:created)
         body = JSON.parse(response.body)
         expect(body['name']).to eq('Rails Brasil')
@@ -28,7 +30,7 @@ RSpec.describe 'Communities API', type: :request do
 
     context 'quando não autenticado' do
       it 'retorna 422' do
-        post '/communities', params: { name: 'Rails Brasil', description: 'Comunidade Rails' }
+        post '/communities', params: { name: 'Rails Brasil', description: 'Comunidade Rails' }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['error']).to match(/autenticado/)
       end
@@ -37,20 +39,23 @@ RSpec.describe 'Communities API', type: :request do
     context 'quando nome já existe' do
       before { create(:community, name: 'Rails Brasil') }
 
+      before { sign_in(creator) }
+
       it 'retorna 422' do
         post '/communities',
              params: { name: 'Rails Brasil' },
-             session: { user_id: creator.id }
+             as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['error']).to match(/em uso/)
       end
     end
 
     context 'quando nome inválido' do
+      before { sign_in(creator) }
       it 'retorna 422' do
         post '/communities',
              params: { name: 'ab' },
-             session: { user_id: creator.id }
+             as: :json
         expect(response).to have_http_status(:unprocessable_entity)
       end
     end
@@ -61,7 +66,7 @@ RSpec.describe 'Communities API', type: :request do
 
     context 'quando dados válidos' do
       it 'atualiza e retorna 200' do
-        patch "/communities/#{community.id}", params: { name: 'Ruby Brasil' }
+        patch "/communities/#{community.id}", params: { name: 'Ruby Brasil' }, as: :json
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['name']).to eq('Ruby Brasil')
       end
@@ -69,7 +74,7 @@ RSpec.describe 'Communities API', type: :request do
 
     context 'quando comunidade não existe' do
       it 'retorna 422' do
-        patch '/communities/99999', params: { name: 'Ruby Brasil' }
+        patch '/communities/99999', params: { name: 'Ruby Brasil' }, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['error']).to match(/não encontrada/)
       end
@@ -81,7 +86,7 @@ RSpec.describe 'Communities API', type: :request do
 
     context 'quando encontra resultados' do
       it 'retorna comunidades e status 200' do
-        get '/communities/search', params: { query: 'Rails' }
+        get '/communities/search', params: { query: 'Rails' }, as: :json
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body).first['name']).to eq('Rails Brasil')
       end
@@ -89,7 +94,7 @@ RSpec.describe 'Communities API', type: :request do
 
     context 'quando não encontra resultados' do
       it 'retorna 404' do
-        get '/communities/search', params: { query: 'inexistente' }
+        get '/communities/search', params: { query: 'inexistente' }, as: :json
         expect(response).to have_http_status(:not_found)
       end
     end

@@ -9,7 +9,7 @@ RSpec.describe 'Messages API', type: :request do
     before { create_list(:message, 2, community: community, user: user) }
 
     it 'retorna todas as mensagens raiz com status 200' do
-      get "/communities/#{community.id}/messages"
+      get "/communities/#{community.id}/messages", as: :json
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body).size).to eq(3)
     end
@@ -19,7 +19,8 @@ RSpec.describe 'Messages API', type: :request do
     context 'quando dados válidos' do
       it 'cria a mensagem e retorna 201' do
         post "/communities/#{community.id}/messages",
-          params: { user_id: user.id, content: 'Olá comunidade!' }
+          params: { user_id: user.id, content: 'Olá comunidade!' },
+          as: :json
 
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['content']).to eq('Olá comunidade!')
@@ -29,7 +30,8 @@ RSpec.describe 'Messages API', type: :request do
     context 'quando content é vazio' do
       it 'retorna 422' do
         post "/communities/#{community.id}/messages",
-          params: { user_id: user.id, content: '' }
+          params: { user_id: user.id, content: '' },
+          as: :json
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -40,7 +42,8 @@ RSpec.describe 'Messages API', type: :request do
     context 'quando mensagem pai existe e é raiz' do
       it 'cria a resposta e retorna 201' do
         post "/communities/#{community.id}/messages/#{message.id}/reply",
-          params: { user_id: user.id, content: 'Respondendo!' }
+          params: { user_id: user.id, content: 'Respondendo!' },
+          as: :json
 
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['parent_message_id']).to eq(message.id)
@@ -52,7 +55,8 @@ RSpec.describe 'Messages API', type: :request do
 
       it 'retorna 422' do
         post "/communities/#{community.id}/messages/#{reply.id}/reply",
-          params: { user_id: user.id, content: 'Resposta da resposta' }
+          params: { user_id: user.id, content: 'Resposta da resposta' },
+          as: :json
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['error']).to match(/responder uma resposta/)

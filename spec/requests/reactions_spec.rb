@@ -12,7 +12,7 @@ RSpec.describe 'Reactions API', type: :request do
     end
 
     it 'retorna todas as reações com status 200' do
-      get "/communities/#{community.id}/messages/#{message.id}/reactions"
+      get "/communities/#{community.id}/messages/#{message.id}/reactions", as: :json
       expect(response).to have_http_status(:ok)
       expect(JSON.parse(response.body).size).to eq(2)
     end
@@ -25,7 +25,7 @@ RSpec.describe 'Reactions API', type: :request do
       it 'cria a reação e retorna 201' do
         post "/communities/#{community.id}/messages/#{message.id}/reactions",
           params: { user_id: user.id, reaction_type: 'like' },
-          headers: json_headers
+          headers: json_headers, as: :json
 
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['reaction_type']).to eq('like')
@@ -40,7 +40,7 @@ RSpec.describe 'Reactions API', type: :request do
       it 'remove a reação (toggle) e retorna 200' do
         post "/communities/#{community.id}/messages/#{message.id}/reactions",
           params: { user_id: user.id, reaction_type: 'like' },
-          headers: json_headers
+          headers: json_headers, as: :json
 
         expect(response).to have_http_status(:ok)
         body = JSON.parse(response.body)
@@ -54,7 +54,7 @@ RSpec.describe 'Reactions API', type: :request do
       it 'retorna 422' do
         post "/communities/#{community.id}/messages/#{message.id}/reactions",
           params: { user_id: user.id, reaction_type: 'dislike' },
-          headers: json_headers
+          headers: json_headers, as: :json
 
         expect(response).to have_http_status(:unprocessable_entity)
       end
@@ -68,7 +68,7 @@ RSpec.describe 'Reactions API', type: :request do
       it 'remove a reação e retorna 200' do
         delete "/communities/#{community.id}/messages/#{message.id}/reactions/#{reaction.id}",
           params: { user_id: user.id, reaction_type: 'like' },
-          headers: { "Accept" => "application/json" }
+          headers: { "Accept" => "application/json" }, as: :json
 
         expect(response).to have_http_status(:ok)
         expect(JSON.parse(response.body)['message']).to match(/removida/)
@@ -79,7 +79,7 @@ RSpec.describe 'Reactions API', type: :request do
       it 'retorna 422' do
         delete "/communities/#{community.id}/messages/#{message.id}/reactions/#{reaction.id}",
           params: { user_id: user.id, reaction_type: 'love' },
-          headers: { "Accept" => "application/json" }
+          headers: { "Accept" => "application/json" }, as: :json
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['error']).to match(/não encontrada/)

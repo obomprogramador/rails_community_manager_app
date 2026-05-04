@@ -6,8 +6,8 @@ require 'selenium-webdriver'
 Capybara.default_max_wait_time = 10
 
 # FORÇAR DETECÇÃO: Verifica variáveis comuns de ambiente Docker/CI
-# is_docker = ENV['DOCKER'] == 'true' || ENV['CI'] || ENV['RACK_ENV'] == 'test'
-is_docker = ENV['DOCKER'] == 'true'
+is_docker = ENV['DOCKER'] == 'true' || ENV['CI'] || ENV['RACK_ENV'] == 'test'
+# is_docker = ENV['DOCKER'] == 'true'
 
 if is_docker
   puts "🚀 [INFO] Detectado ambiente Docker/CI. Configurando Selenium Remoto (Chrome)."

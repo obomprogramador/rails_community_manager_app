@@ -18,7 +18,8 @@ RSpec.describe 'CommunityMembers API', type: :request do
     context 'quando usuário ainda não é membro' do
       it 'entra na comunidade e retorna 201' do
         post "/communities/#{community.id}/community_members",
-          params: { user_id: user.id }
+          params: { user_id: user.id },
+          as: :json
 
         expect(response).to have_http_status(:created)
         expect(JSON.parse(response.body)['role']).to eq('member')
@@ -30,7 +31,8 @@ RSpec.describe 'CommunityMembers API', type: :request do
 
       it 'retorna 422' do
         post "/communities/#{community.id}/community_members",
-          params: { user_id: user.id }
+          params: { user_id: user.id },
+          as: :json
 
         expect(response).to have_http_status(:unprocessable_entity)
         expect(JSON.parse(response.body)['error']).to match(/já é membro/)
