@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
 
     # redirect_to communities_path, notice: "Bem-vindo, #{output.username}!"
     redirect_to feed_path, notice: "Bem-vindo, #{output.username}!"
-  rescue CleanArch::Domains::DomainError => e
+  rescue CleanArch::Domains::DomainError, ArgumentError => e
     flash.now[:alert] = e.message
     render :new, status: :unprocessable_entity
   end
