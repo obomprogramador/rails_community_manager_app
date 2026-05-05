@@ -2,7 +2,7 @@
 set -e
 
 echo "Running migrations..."
-bin/rails db:drop db:create db:migrate
+DISABLE_DATABASE_ENVIRONMENT_CHECK=1 bin/rails db:drop db:create db:migrate
 
 echo "Precompiling assets..."
 bin/rails assets:precompile
