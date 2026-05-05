@@ -4,7 +4,16 @@
 
 **Mini rede social para gestão de comunidades, construída com Clean Architecture**
 
-Fotos aqui...
+<img width="1920" height="1008" alt="Captura de tela de 2026-05-05 17-22-29" src="https://github.com/user-attachments/assets/845d0b90-0f2f-497e-bdb1-977baf7817ca" />
+<img width="1920" height="1008" alt="Captura de tela de 2026-05-05 17-23-21" src="https://github.com/user-attachments/assets/6a363991-ef75-4583-bd2e-0ea20e0c23b0" />
+<img width="1920" height="1008" alt="Captura de tela de 2026-05-05 17-22-56" src="https://github.com/user-attachments/assets/4d44fb43-b5ea-4cc7-99fa-582224e7aecf" />
+<img width="1920" height="1008" alt="Captura de tela de 2026-05-05 17-22-44" src="https://github.com/user-attachments/assets/b312e53f-006a-4418-a131-c228a4f9a233" />
+<img width="1920" height="1008" alt="Captura de tela de 2026-05-05 17-22-38" src="https://github.com/user-attachments/assets/0d521030-ae6b-4764-9e85-874d55ed642e" />
+
+Usuários gerados pelo seed:
+
+<img width="1630" height="777" alt="Captura de tela de 2026-05-05 18-38-22" src="https://github.com/user-attachments/assets/ef288233-5a7a-4cf4-9089-711bd601216d" />
+
 
 🌐 **[Ver App em Produção](https://rails-community-manager-app.onrender.com/)**
 🌐 **[Github do Projeto](https://github.com/obomprogramador/rails_community_manager_app)**
