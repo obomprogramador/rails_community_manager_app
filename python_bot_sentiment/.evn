@@ -1,0 +1,3 @@
+DATABASE_URL=postgresql://seu_usuario:sua_senha@localhost:5432/seu_banco
+OPENAI_API_KEY=sk-seu-token-aqui
+OPENAI_BASE_URL=https://api.openai.com/v1
