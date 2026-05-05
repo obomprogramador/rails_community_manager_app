@@ -31,3 +31,10 @@
 .form-container-content button {
   align-self: flex-end; /* Botão à direita */
 }
+
+@media (max-width: 800px) {
+  .form-container-content{
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+}

@@ -22,3 +22,7 @@
   padding: 30px;
   justify-content: center;
 }
+
+@media (max-width: 800px) {
+  
+}

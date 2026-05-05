@@ -24,7 +24,7 @@
   left: 0;
   right: 0;
   z-index: 10000;
-  width: calc(100% - 20px); 
+  width: calc(100% - 20px);
 }
 
 /* Área Esquerda (Botão Sair) */
@@ -38,7 +38,7 @@
   gap: 2rem;
   flex: 1;
   justify-content: flex-start;
-  padding-left: 50vh;
+  padding-left: 2rem;
 }
 
 /* Estilo dos Links */
@@ -57,27 +57,6 @@
   color: var(--nav-hover-color);
 }
 
-/* Responsividade: Em telas pequenas, empilha o menu */
-@media (max-width: 600px) {
-  .top-nav {
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-  }
-  
-  .nav-center {
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-    text-align: center;
-  }
-  
-  .nav-left, .nav-right {
-    width: 100%;
-    text-align: center;
-  }
-}
-
 /* Estilo do Texto de Saudação */
 .user-greeting {
   color: #ffffff;
@@ -92,4 +71,27 @@
   gap: 10px;
   justify-content: center;
   align-items: center;
+}
+
+/* Responsividade: Em telas pequenas, empilha o menu */
+@media (max-width: 800px) {
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch; /* ← adicione isso */
+    gap: 1rem;
+    padding: 1rem;
+  }
+  .nav-center {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: center;
+    padding-left: 0; /* ← zera o padding no mobile */
+    justify-content: center; /* ← centraliza os itens */
+  }
+  .nav-left,
+  .nav-right {
+    width: 100%;
+    text-align: center;
+  }
 }

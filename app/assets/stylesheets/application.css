@@ -94,3 +94,6 @@ ul, ol {
 @import "_message-card.css";
 @import "_message-form.css";
 @import "_message-board.css";
+
+@import "_community-view.css";
+@import "_messages-view.css";
