@@ -28,7 +28,7 @@ module CleanArch
             raise ArgumentError, "Nome não pode ser vazio" if value.nil? || value.strip.empty?
             raise ArgumentError, "Nome muito curto, mínimo #{MIN_LENGTH} caracteres" if value.strip.length < MIN_LENGTH
             raise ArgumentError, "Nome muito longo, máximo #{MAX_LENGTH} caracteres" if value.strip.length > MAX_LENGTH
-            raise ArgumentError, "Nome contém caracteres inválidos" unless value.match?(VALID_FORMAT)
+            # raise ArgumentError, "Nome contém caracteres inválidos" unless value.match?(VALID_FORMAT)
           end
         end
       end

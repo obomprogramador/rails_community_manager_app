@@ -35,13 +35,16 @@ ROLES             = %w[member member member moderator].freeze # maioria member
 puts "👤 Criando #{TOTAL_USERS} usuários..."
 
 users = TOTAL_USERS.times.map do |i|
-  User.create!(
+  User.find_or_create_by!(
     username: "#{Faker::Internet.unique.username(specifier: 5..15, separators: ['_'])}_#{i}",
     active:   true
   )
 end
 
 puts "   ✅ #{users.size} usuários criados"
+puts "\n\n"
+puts User.pluck(:username)
+puts "\n\n"
 
 # ============================================================
 # IPs ÚNICOS
@@ -66,14 +69,14 @@ community_data = [
 
 communities = community_data.map do |data|
   creator = users.sample
-  community = Community.create!(
+  community = Community.find_or_create_by!(
     name:        data[:name],
     description: data[:description],
     creator_id:  creator.id
   )
 
   # Creator entra como admin automaticamente
-  CommunityMember.create!(
+  CommunityMember.find_or_create_by!(
     community: community,
     user:      creator,
     role:      'admin'
@@ -98,7 +101,7 @@ communities.each do |community|
   members_sample.each do |user|
     next if CommunityMember.exists?(community: community, user: user)
 
-    CommunityMember.create!(
+    CommunityMember.find_or_create_by!(
       community: community,
       user:      user,
       role:      ROLES.sample
@@ -121,7 +124,7 @@ root_total.times do
   community = communities.sample
   user      = users.sample
 
-  message = Message.create!(
+  message = Message.find_or_create_by!(
     user:      user,
     community: community,
     content:   Faker::Lorem.paragraph(sentence_count: rand(1..5)),
@@ -145,7 +148,7 @@ reply_total.times do
   parent    = root_messages.sample
   user      = users.sample
 
-  reply = Message.create!(
+  reply = Message.find_or_create_by!(
     user:              user,
     community:         parent.community,
     parent_message_id: parent.id,
@@ -181,7 +184,7 @@ all_messages.each do |message|
       reaction_type: reaction_type
     )
 
-    Reaction.create!(
+    Reaction.find_or_create_by!(
       message:       message,
       user:          user,
       reaction_type: reaction_type

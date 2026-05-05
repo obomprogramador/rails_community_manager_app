@@ -14,13 +14,7 @@
     = javascript_importmap_tags
   %body
     = render "layouts/flash_messages"
-    - puts "\n\n\n\n"
-    - pp controller_name
-    - pp action_name
     - hide_nav = controller_name.in?(["sessions", "users"])
-    - pp hide_nav
-    - pp session.to_h
-    - puts "\n\n\n\n"
     - if session[:user_id].present? && !hide_nav
       %div.fixed-top-nav-container
         %nav.top-nav
