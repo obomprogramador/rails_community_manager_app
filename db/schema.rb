@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_05_02_222938) do
+ActiveRecord::Schema[7.2].define(version: 2026_05_05_184928) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,6 +45,10 @@ ActiveRecord::Schema[7.2].define(version: 2026_05_02_222938) do
     t.float "ai_sentiment_score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "reactions_count", default: 0, null: false
+    t.integer "replies_count", default: 0, null: false
+    t.virtual "engagement_score", type: :float, as: "(((reactions_count)::numeric * 1.5) + ((replies_count)::numeric * 1.0))", stored: true
+    t.index ["community_id", "parent_message_id", "engagement_score"], name: "idx_messages_on_comm_parent_score", order: { engagement_score: :desc }
     t.index ["community_id"], name: "index_messages_on_community_id"
     t.index ["parent_message_id"], name: "index_messages_on_parent_message_id"
     t.index ["user_id"], name: "index_messages_on_user_id"

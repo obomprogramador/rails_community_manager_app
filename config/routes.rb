@@ -49,6 +49,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :messages, only: [:index, :create]
       resources :reactions, only: [:create]
+      get "communities/:id/messages/top", to: "messages#top"
     end
   end
 

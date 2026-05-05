@@ -4,10 +4,12 @@ module CleanArch
       module Entities
         class MessageEntity
           attr_reader :id, :user_id, :username, :community_id, :parent_message_id,
-                      :content, :user_ip, :sentiment_score, :created_at
+                      :content, :user_ip, :sentiment_score, :created_at,
+                      :reactions_count, :replies_count, :engagement_score
 
           def initialize(id:, user_id:, community_id:, content:, user_ip:,
-                         username: nil, parent_message_id: nil, sentiment_score: nil, created_at: Time.current)
+                         username: nil, parent_message_id: nil, sentiment_score: nil, created_at: Time.current,
+                         reactions_count: 0, replies_count: 0, engagement_score: 0.0)
             @id                = id
             @user_id           = user_id
             @username          = username
@@ -17,6 +19,9 @@ module CleanArch
             @user_ip           = CleanArch::Domains::UserDomain::ValueObjects::IpAddress.new(user_ip)
             @sentiment_score   = sentiment_score.nil? ? nil : ValueObjects::SentimentScore.new(sentiment_score)
             @created_at        = created_at
+            @reactions_count    = reactions_count
+            @replies_count       = replies_count
+            @engagement_score  = engagement_score
           end
 
           def reply?

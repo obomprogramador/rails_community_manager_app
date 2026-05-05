@@ -271,4 +271,79 @@ RSpec.describe 'Api::V1::Messages', type: :request do
       end
     end
   end
+
+  describe 'GET /api/v1/communities/:id/messages/top' do
+    let!(:msg1) { create(:message, community: community, user: user) }
+    let!(:msg2) { create(:message, community: community, user: user) }
+    let!(:msg3) { create(:message, community: community, user: user) }
+
+    before do
+      # Atualiza apenas colunas graváveis — o banco recalcula engagement_score
+      msg1.update_columns(reactions_count: 5, replies_count: 2)  # Score: 9.5
+      msg2.update_columns(reactions_count: 10, replies_count: 5) # Score: 20.0
+      msg3.update_columns(reactions_count: 1, replies_count: 0)  # Score: 1.5
+
+      # Recarrega os objetos para refletir o engagement_score calculado pelo banco
+      msg1.reload
+      msg2.reload
+      msg3.reload
+    end
+
+    it 'retorna mensagens ordenadas por engajamento de forma decrescente' do
+      get "/api/v1/communities/#{community.id}/messages/top"
+
+      expect(response).to have_http_status(:ok)
+
+      messages = JSON.parse(response.body)['messages']
+
+      expect(messages.size).to eq(3)
+      expect(messages[0]['id']).to eq(msg2.id)
+      expect(messages[1]['id']).to eq(msg1.id)
+      expect(messages[2]['id']).to eq(msg3.id)
+    end
+
+    it 'respeita o limite default de 10 mensagens' do
+      # 10 novas + 3 do before = 13 total, mas retorna apenas 10
+      create_list(:message, 10, community: community, user: user)
+
+      get "/api/v1/communities/#{community.id}/messages/top"
+
+      expect(JSON.parse(response.body)['messages'].size).to eq(10)
+    end
+
+    it 'respeita o limite enviado por parâmetro' do
+      create_list(:message, 5, community: community, user: user)
+
+      get "/api/v1/communities/#{community.id}/messages/top", params: { limit: 2 }
+
+      expect(JSON.parse(response.body)['messages'].size).to eq(2)
+    end
+
+    it 'limita a um máximo de 50 mensagens' do
+      # 55 novas + 3 do before = 58 total, mas retorna apenas 50
+      create_list(:message, 55, community: community, user: user)
+
+      get "/api/v1/communities/#{community.id}/messages/top", params: { limit: 100 }
+
+      expect(JSON.parse(response.body)['messages'].size).to eq(50)
+    end
+
+    it 'retorna o formato esperado incluindo counters e score' do
+      get "/api/v1/communities/#{community.id}/messages/top"
+
+      first_msg = JSON.parse(response.body)['messages'].find { |m| m['id'] == msg2.id }
+
+      # Ajuste reaction_count/reactions_count conforme o serializer retornar
+      expect(first_msg).to include(
+        'id'               => msg2.id,
+        'reactions_count'   => 10,
+        'replies_count'      => 5,
+        'engagement_score' => 20.0
+      )
+      expect(first_msg['user']).to include(
+        'id'       => user.id,
+        'username' => user.username
+      )
+    end
+  end
 end

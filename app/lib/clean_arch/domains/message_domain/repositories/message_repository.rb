@@ -53,6 +53,14 @@ module CleanArch
                   .map { |record| to_entity(record) }
           end
 
+          def list_top_by_community(community_id, limit)
+            Message.includes(:user)
+                  .where(community_id: community_id, parent_message_id: nil)
+                  .order(engagement_score: :desc)
+                  .limit(limit)
+                  .map { |record| to_entity(record) }
+          end
+
           def list_replies(parent_message_id)
             Message.where(parent_message_id: parent_message_id)
                    .order(created_at: :asc)
@@ -71,7 +79,10 @@ module CleanArch
               content:           record.content,
               user_ip:           record.user_ip,
               sentiment_score:   record.ai_sentiment_score,
-              created_at:        record.created_at
+              created_at:        record.created_at,
+              reactions_count:    record.try(:reactions_count) || 0,
+              replies_count:       record.try(:replies_count) || 0,
+              engagement_score:  record.try(:engagement_score) || 0.0
             )
           end
         end

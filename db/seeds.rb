@@ -167,7 +167,7 @@ puts "   ✅ #{replies.size} respostas criadas"
 puts "😀 Criando reações (#{(REACTION_CHANCE * 100).to_i}% das mensagens)..."
 
 all_messages  = root_messages + replies
-reaction_count = 0
+reactions_count = 0
 
 all_messages.each do |message|
   next unless rand < REACTION_CHANCE
@@ -189,11 +189,11 @@ all_messages.each do |message|
       user:          user,
       reaction_type: reaction_type
     )
-    reaction_count += 1
+    reactions_count += 1
   end
 end
 
-puts "   ✅ #{reaction_count} reações criadas"
+puts "   ✅ #{reactions_count} reações criadas"
 
 # ============================================================
 # RESUMO FINAL

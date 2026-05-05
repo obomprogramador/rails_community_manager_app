@@ -27,6 +27,38 @@ module Api
         render json: { error: e.message }, status: :unprocessable_entity
       end
 
+      def top
+        limit = params.fetch(:limit, 10).to_i
+
+        use_case = MessageDomain::UseCases::ListTopMessages.new(
+          message_repository: MessageDomain::Repositories::MessageRepository.new
+        )
+
+        output = use_case.call(
+          community_id: params[:id],
+          limit: limit
+        )
+
+        render json: {
+          messages: output.map do |msg|
+            {
+              id: msg.id,
+              content: msg.content,
+              user: {
+                id: msg.user_id,
+                username: msg.username
+              },
+              ai_sentiment_score: msg.sentiment_score,
+              reactions_count: msg.reactions_count,
+              replies_count: msg.replies_count,
+              engagement_score: msg.engagement_score
+            }
+          end
+        }, status: :ok
+      rescue CleanArch::Domains::DomainError => e
+        render json: { error: e.message }, status: :unprocessable_entity
+      end
+
       def create
         input_dto = MessageDomain::Dtos::CreateMessageInputDto.new(
           username:          params.require(:username),
