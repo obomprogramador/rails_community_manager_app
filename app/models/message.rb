@@ -12,6 +12,13 @@ class Message < ApplicationRecord
     },
     allow_nil: true
   
+  def self.list_feed(community_ids:, limit: 50)
+    includes(:user, :community)
+      .where(parent_message_id: nil, community_id: community_ids)
+      .order(created_at: :desc)
+      .limit(limit)
+  end
+
   # Estratégia para eliminar a query desnecessária ao listar as comunidades existes
   # e recuperar a quantidade de menssagens existentes naquela comunidade.
   # Caso o contador se perca, pode-se no futuro ciar um cron job para validar as quantidades

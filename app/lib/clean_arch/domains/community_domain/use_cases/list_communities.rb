@@ -3,12 +3,12 @@ module CleanArch
     module CommunityDomain
       module UseCases
         class ListCommunities
-          def initialize(community_repository:)
+          def initialize(community_repository: Community)
             @community_repository = community_repository
           end
 
           def call
-            @community_repository.all.map { |entity| Dtos::CommunityOutputDto.new(entity) }
+            @community_repository.all.order(:name).map { |record| record_to_dto(record) }
           end
 
           def list_by_ids(ids:)
@@ -16,17 +16,29 @@ module CleanArch
 
             @community_repository
               .list_by_ids(ids)
-              .map { |entity| Dtos::CommunityOutputDto.new(entity) }
+              .map { |record| record_to_dto(record) }
           end
 
           def find_by_id(id)
-            raise CleanArch::Domains::DomainError, "id é obrigatório" if id.blank?
+            raise DomainError, "id é obrigatório" if id.blank?
 
-            entity = @community_repository.find(id)
+            record = @community_repository.find_by(id: id)
+            raise DomainError, "Comunidade não encontrada" if record.nil?
 
-            raise CleanArch::Domains::DomainError, "Comunidade não encontrada" if entity.nil?
+            record_to_dto(record)
+          end
 
-            Dtos::CommunityOutputDto.new(entity)
+          private
+
+          def record_to_dto(record)
+            Dtos::CommunityOutputDto.new(
+              id: record.id,
+              name: record.name,
+              description: record.description,
+              total_messages: record.total_messages,
+              creator_id: record.creator_id,
+              created_at: record.created_at
+            )
           end
         end
       end

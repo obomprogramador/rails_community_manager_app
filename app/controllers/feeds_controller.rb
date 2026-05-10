@@ -8,19 +8,19 @@ class FeedsController < ApplicationController
 
     memberships = use_case(
       CommunityMemberDomain::UseCases::ListUserMemberships,
-      community_member_repository: CommunityMemberDomain::Repositories::CommunityMemberRepository
+      community_member_repository: CommunityMember
     ).call(user_id: session[:user_id])
 
     community_ids = memberships.map(&:community_id)
 
     @communities = use_case(
       CommunityDomain::UseCases::ListCommunities,
-      community_repository: CommunityDomain::Repositories::CommunityRepository
+      community_repository: Community
     ).list_by_ids(ids: community_ids)
 
     @messages = use_case(
       MessageDomain::UseCases::ListFeedMessages,
-      message_repository: MessageDomain::Repositories::MessageRepository
+      message_repository: Message
     ).call(community_ids: community_ids, limit: 50)
   end
 end
