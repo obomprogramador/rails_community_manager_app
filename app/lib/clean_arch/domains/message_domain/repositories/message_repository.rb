@@ -67,6 +67,14 @@ module CleanArch
                    .map { |record| to_entity(record) }
           end
 
+          def list_feed(community_ids:, limit: 50)
+            Message.includes(:user, :community)
+                   .where(parent_message_id: nil, community_id: community_ids)
+                   .order(created_at: :desc)
+                   .limit(limit)
+                   .map { |record| to_entity(record) }
+          end
+
           private
 
           def to_entity(record)
@@ -74,6 +82,7 @@ module CleanArch
               id:                record.id,
               user_id:           record.user_id,
               username:          record.user&.username,
+              community_name:    record.community&.name,
               community_id:      record.community_id,
               parent_message_id: record.parent_message_id,
               content:           record.content,

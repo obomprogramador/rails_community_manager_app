@@ -43,6 +43,10 @@ module CleanArch
             Community.order(:name).map { |record| to_entity(record) }
           end
 
+          def list_by_ids(ids)
+            Community.where(id: ids).order(:name).map { |record| to_entity(record) }
+          end
+
           def search(query)
             Community.where("name ILIKE ?", "%#{query}%")
                      .order(:name)

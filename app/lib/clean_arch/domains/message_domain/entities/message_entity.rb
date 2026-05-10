@@ -5,14 +5,16 @@ module CleanArch
         class MessageEntity
           attr_reader :id, :user_id, :username, :community_id, :parent_message_id,
                       :content, :user_ip, :sentiment_score, :created_at,
-                      :reactions_count, :replies_count, :engagement_score
+                      :reactions_count, :replies_count, :engagement_score,
+                      :community_name
 
           def initialize(id:, user_id:, community_id:, content:, user_ip:,
-                         username: nil, parent_message_id: nil, sentiment_score: nil, created_at: Time.current,
+                         username: nil, community_name: nil, parent_message_id: nil, sentiment_score: nil, created_at: Time.current,
                          reactions_count: 0, replies_count: 0, engagement_score: 0.0)
             @id                = id
             @user_id           = user_id
             @username          = username
+            @community_name    = community_name
             @community_id      = community_id
             @parent_message_id = parent_message_id
             @content           = ValueObjects::MessageContent.new(content)

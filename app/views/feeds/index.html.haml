@@ -7,9 +7,9 @@
         - @messages.each do |message|
           %li.message-item{ id: "feed_message_#{message.id}" }
             .message-header
-              %strong= message.user&.username || "Usuário"
-              - if message.community.present?
-                %span= " em #{message.community.name}"
+              %strong= message.username || "Usuário"
+              - if message.community_name.present?
+                %span= " em #{message.community_name}"
               %time{ datetime: (message.created_at&.iso8601 || "") }
                 = message.created_at&.strftime("%d/%m/%Y %H:%M") || "-"
 

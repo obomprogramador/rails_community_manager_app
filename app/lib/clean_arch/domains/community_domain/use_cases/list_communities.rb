@@ -11,6 +11,14 @@ module CleanArch
             @community_repository.all.map { |entity| Dtos::CommunityOutputDto.new(entity) }
           end
 
+          def list_by_ids(ids:)
+            return [] if ids.blank?
+
+            @community_repository
+              .list_by_ids(ids)
+              .map { |entity| Dtos::CommunityOutputDto.new(entity) }
+          end
+
           def find_by_id(id)
             raise CleanArch::Domains::DomainError, "id é obrigatório" if id.blank?
 
