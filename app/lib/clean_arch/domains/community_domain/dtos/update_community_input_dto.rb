@@ -2,15 +2,23 @@ module CleanArch
   module Domains
     module CommunityDomain
       module Dtos
-        class UpdateCommunityInputDto
-          attr_reader :id, :name, :description
+        class UpdateCommunityInputDto < InputDto
+          attr_accessor :id, :name, :description
+          validates :id, presence: { message: "ID é obrigatório" }
+          validate :at_least_one_field
 
-          def initialize(id:, name: nil, description: nil)
-            raise ArgumentError, "ID é obrigatório" if id.blank?
-            raise ArgumentError, "Informe name ou description para atualizar" if name.nil? && description.nil?
-            @id          = id
-            @name        = name&.strip
-            @description = description&.strip
+          def initialize(attrs = {})
+            attrs[:name] = attrs[:name]&.strip if attrs[:name]
+            attrs[:description] = attrs[:description]&.strip if attrs[:description]
+            super
+          end
+
+          private
+
+          def at_least_one_field
+            if name.nil? && description.nil?
+              errors.add(:base, "Informe name ou description para atualizar")
+            end
           end
         end
       end

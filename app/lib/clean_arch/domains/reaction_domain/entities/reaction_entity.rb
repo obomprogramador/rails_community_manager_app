@@ -21,6 +21,13 @@ module CleanArch
             @reaction_type.to_s
           end
 
+          def to_h
+            {
+              id: @id, message_id: @message_id, user_id: @user_id,
+              reaction_type: reaction_type, created_at: @created_at
+            }
+          end
+
           def ==(other)
             other.is_a?(ReactionEntity) && id == other.id
           end

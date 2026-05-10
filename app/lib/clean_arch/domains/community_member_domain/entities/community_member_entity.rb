@@ -40,6 +40,13 @@ module CleanArch
             @role.to_s
           end
 
+          def to_h
+            {
+              id: @id, community_id: @community_id, user_id: @user_id,
+              role: role, created_at: @created_at
+            }
+          end
+
           def ==(other)
             other.is_a?(CommunityMemberEntity) && id == other.id
           end

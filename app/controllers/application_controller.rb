@@ -5,6 +5,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def use_case(klass, **repos)
+    klass.new(**repos.transform_values(&:new))
+  end
+
   def reject_api_requests
     return if Rails.env.test?
 

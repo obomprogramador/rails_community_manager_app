@@ -2,17 +2,15 @@ module CleanArch
   module Domains
     module CommunityDomain
       module Dtos
-        class CreateCommunityInputDto
-          attr_reader :name, :description, :creator_id
+        class CreateCommunityInputDto < InputDto
+          attr_accessor :name, :description, :creator_id
+          validates :name, presence: { message: "Nome é obrigatório" }
+          validates :creator_id, presence: { message: "É necessário estar autenticado" }
 
-          def initialize(name:, creator_id:, description: nil)
-            raise ArgumentError, "É necessário estar autenticado" if creator_id.nil?
-            raise ArgumentError, "Nome é obrigatório" if name.blank?
-            raise ArgumentError, "É necessário estar autenticado para criar uma comunidade" if creator_id.blank?
-
-            @name        = name.strip
-            @description = description&.strip
-            @creator_id  = creator_id
+          def initialize(attrs = {})
+            attrs[:name] = attrs[:name]&.strip if attrs[:name]
+            attrs[:description] = attrs[:description]&.strip if attrs[:description]
+            super
           end
         end
       end

@@ -3,36 +3,29 @@ module CleanArch
     module CommunityMemberDomain
       module Repositories
         class CommunityMemberRepository
+          include RepositoryCrud
+
+          alias create create!
+
           def find(community_id:, user_id:)
             record = CommunityMember.find_by(community_id: community_id, user_id: user_id)
             return nil if record.nil?
             to_entity(record)
           end
 
-          def exists?(community_id:, user_id:)
-            CommunityMember.exists?(community_id: community_id, user_id: user_id)
-          end
-
-          def create(community_id:, user_id:, role: 'member')
-            record = CommunityMember.create!(community_id: community_id, user_id: user_id, role: role)
-            to_entity(record)
-          rescue ActiveRecord::RecordInvalid => e
-            raise CleanArch::Domains::DomainError, "Erro ao criar vívulo entre User(#{user_id}) e Community(#{community_id}): #{e.message}"
-          end
-
           def save(entity)
             record = CommunityMember.find_by(community_id: entity.community_id, user_id: entity.user_id)
-            raise CleanArch::Domains::DomainError, "Membro não encontrado" if record.nil?
+            raise DomainError, "Membro não encontrado" if record.nil?
 
             record.update!(role: entity.role)
             to_entity(record)
           rescue ActiveRecord::RecordInvalid => e
-            raise CleanArch::Domains::DomainError, "Erro ao salvar membro: #{e.message}"
+            raise DomainError, "Erro ao salvar membro: #{e.message}"
           end
 
           def delete(community_id:, user_id:)
             record = CommunityMember.find_by(community_id: community_id, user_id: user_id)
-            raise CleanArch::Domains::DomainError, "Membro não encontrado" if record.nil?
+            raise DomainError, "Membro não encontrado" if record.nil?
             record.destroy!
           end
 
@@ -49,6 +42,10 @@ module CleanArch
           end
 
           private
+
+          def model_class
+            CommunityMember
+          end
 
           def to_entity(record)
             Entities::CommunityMemberEntity.new(

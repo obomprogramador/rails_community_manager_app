@@ -27,6 +27,14 @@ module CleanArch
             @description.to_s
           end
 
+          def to_h
+            {
+              id: @id, name: name, description: description,
+              total_messages: @total_messages, creator_id: @creator_id,
+              created_at: @created_at
+            }
+          end
+
           def ==(other)
             other.is_a?(CommunityEntity) && id == other.id
           end

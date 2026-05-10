@@ -2,12 +2,13 @@ module CleanArch
   module Domains
     module UserDomain
       module Dtos
-        class RegisterUserInputDto
-          attr_reader :username
+        class RegisterUserInputDto < InputDto
+          attr_accessor :username
+          validates :username, presence: { message: "Username é obrigatório" }
 
-          def initialize(username:)
-            raise ArgumentError, "Username é obrigatório" if username.blank?
-            @username = username.strip
+          def initialize(attrs = {})
+            attrs[:username] = attrs[:username]&.strip if attrs[:username]
+            super
           end
         end
       end

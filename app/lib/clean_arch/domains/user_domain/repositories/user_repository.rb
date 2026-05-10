@@ -3,11 +3,9 @@ module CleanArch
     module UserDomain
       module Repositories
         class UserRepository
-          def find(id)
-            record = User.find_by(id: id)
-            return nil if record.nil?
-            to_entity(record)
-          end
+          include RepositoryCrud
+
+          alias create create!
 
           def find_by_username(username)
             record = User.find_by(username: username)
@@ -16,14 +14,7 @@ module CleanArch
           end
 
           def exists_by_username?(username)
-            User.exists?(username: username)
-          end
-
-          def create(username:)
-            record = User.create!(username: username)
-            to_entity(record)
-          rescue ActiveRecord::RecordInvalid => e
-            raise DomainError, "Erro ao criar usuário: #{e.message}"
+            exists?(username: username)
           end
 
           def save(user_entity)
@@ -37,6 +28,10 @@ module CleanArch
           end
 
           private
+
+          def model_class
+            User
+          end
 
           def to_entity(record)
             Entities::UserEntity.new(

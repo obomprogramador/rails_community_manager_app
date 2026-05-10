@@ -2,17 +2,13 @@ module CleanArch
   module Domains
     module ReactionDomain
       module Dtos
-        class AddReactionInputDto
-          attr_reader :message_id, :user_id, :reaction_type
+        class AddReactionInputDto < InputDto
+          attr_accessor :message_id, :user_id, :reaction_type
+          validates :message_id, :user_id, :reaction_type, presence: true
 
-          def initialize(message_id:, user_id:, reaction_type:)
-            raise ArgumentError, "message_id é obrigatório" if message_id.blank?
-            raise ArgumentError, "user_id é obrigatório" if user_id.blank?
-            raise ArgumentError, "reaction_type é obrigatório" if reaction_type.blank?
-
-            @message_id    = message_id
-            @user_id       = user_id
-            @reaction_type = reaction_type.downcase.strip
+          def initialize(attrs = {})
+            attrs[:reaction_type] = attrs[:reaction_type]&.downcase&.strip if attrs[:reaction_type]
+            super
           end
         end
       end

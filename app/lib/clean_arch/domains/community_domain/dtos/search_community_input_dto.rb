@@ -2,12 +2,13 @@ module CleanArch
   module Domains
     module CommunityDomain
       module Dtos
-        class SearchCommunityInputDto
-          attr_reader :query
+        class SearchCommunityInputDto < InputDto
+          attr_accessor :query
+          validates :query, presence: { message: "Query não pode ser vazia" }
 
-          def initialize(query:)
-            raise ArgumentError, "Query não pode ser vazia" if query.blank?
-            @query = query.strip
+          def initialize(attrs = {})
+            attrs[:query] = attrs[:query]&.strip if attrs[:query]
+            super
           end
         end
       end

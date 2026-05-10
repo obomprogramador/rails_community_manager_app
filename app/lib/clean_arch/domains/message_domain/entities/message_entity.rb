@@ -50,6 +50,18 @@ module CleanArch
             @sentiment_score&.value
           end
 
+          def to_h
+            {
+              id: @id, user_id: @user_id, username: @username,
+              community_name: @community_name, community_id: @community_id,
+              parent_message_id: @parent_message_id, content: content,
+              user_ip: user_ip, sentiment_score: sentiment_score,
+              created_at: @created_at,
+              reactions_count: @reactions_count, replies_count: @replies_count,
+              engagement_score: @engagement_score
+            }
+          end
+
           def ==(other)
             other.is_a?(MessageEntity) && id == other.id
           end

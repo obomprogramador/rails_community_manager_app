@@ -21,6 +21,10 @@ module CleanArch
             @active
           end
 
+          def to_h
+            { id: @id, username: @username.to_s, active: active?, created_at: @created_at }
+          end
+
           def ==(other)
             other.is_a?(UserEntity) && id == other.id
           end
