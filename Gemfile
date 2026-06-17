@@ -53,6 +53,6 @@ group :test do
   # Ferramentas úteis com RSpec
   gem "factory_bot_rails"
   gem "capybara"
-  gem 'selenium-webdriver', '~> 4.21'
+  gem 'selenium-webdriver', '~> 4.44'
   gem 'database_cleaner-active_record'
 end
